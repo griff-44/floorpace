@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>FloorPace Pro</title>
+    <style>
+        :root {
+            --bg-dark: #000000;
+            --bg-card: #121212;
+            --accent-green: #2E7D32;
+            --accent-blue: #1565C0;
+            --accent-purple: #6A1B9A;
+            --text-main: #FFFFFF;
+            --text-muted: #888888;
+            --border-color: #222222;
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            padding: 16px;
+            padding-bottom: 40px;
+        }
+        header {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        h1 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+        .app-screen {
+            display: none;
+        }
+        .app-screen.active {
+            display: block;
+        }
+        .metric-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        .metric-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+        }
+        .metric-label {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 4px;
+        }
+        .metric-value {
+            font-size: 1.75rem;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+        }
+        .progress-container {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+        .progress-bar-bg {
+            background-color: #222;
+            height: 12px;
+            border-radius: 6px;
+            overflow: hidden;
+            margin-top: 8px;
+        }
+        .progress-bar-fill {
+            background: linear-gradient(90deg, #1565C0, #1E88E5);
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        .nav-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 16px;
+            gap: 8px;
+        }
+        .tab-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            padding: 12px 16px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+        }
+        .tab-btn.active {
+            color: var(--text-main);
+            border-bottom-color: var(--text-main);
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .history-item {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 12px 16px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        .history-item:hover {
+            background-color: #1a1a1a;
+        }
+        .history-summary {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .history-details {
+            display: none;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px dashed #333;
+        }
+        .history-details.expanded {
+            display: block;
+        }
+        .timeline-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            padding: 4px 0;
+            color: #ccc;
+        }
+        .btn-giant {
+            background-color: var(--accent-blue);
+            color: white;
+            border: none;
+            border-radius: 16px;
+            width: 100%;
+            height: 60px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .btn-secondary {
+            background-color: #222;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 10px 16px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        input, select {
+            font-size: 16px !important;
+        }
+        .break-btn {
+            font-size: 0.75rem;
+            letter-spacing: 0.02em;
+        }
+        .chart-selector {
+            background: #000;
+            color: #fff;
+            border: 1px solid #444;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            outline: none;
+            cursor: pointer;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+</head>
+<body>
+
+    <!-- SCREEN 1: HOMEPAGE HUB -->
+    <div id="screen-home" class="app-screen active">
+        <header>
+            <div>
+                <h1>FloorPace Hub</h1>
+                <p style="color: var(--text-muted); font-size: 0.85rem;">Performance & Historical Storage</p>
+            </div>
+            <button class="btn-secondary" style="background-color: var(--accent-green);" onclick="window.floorPace.startNewShiftSession()">🚀 START SHIFT</button>
+        </header>
+
+        <!-- Lifetime Stats -->
+        <div class="metric-grid">
+            <div class="metric-card" style="background: linear-gradient(145deg, #0d1b2a, #121212);">
+                <span class="metric-label" style="color: #415a77;">Lifetime Total Picks</span>
+                <span class="metric-value" id="home-stat-lifetime-picks">0</span>
+            </div>
+            <div class="metric-card" style="background: linear-gradient(145deg, #1a102f, #121212);">
+                <span class="metric-label" style="color: #9b5de5;">Archived Shifts</span>
+                <span class="metric-value" id="home-stat-shift-count">0</span>
+            </div>
+        </div>
+
+        <!-- Averaging Calculations Display Banner -->
+        <div class="metric-card" style="background: linear-gradient(145deg, #14251c, #121212); margin-bottom: 16px; border: 1px solid #1e3d29;">
+            <span class="metric-label" style="color: #52b788;">Average Picks Per Shift</span>
+            <span class="metric-value" id="home-stat-avg-picks" style="color: #74c69d;">0.0 <span style="font-size:0.9rem; font-weight:normal; color:#888;">items / session</span></span>
+        </div>
+
+        <!-- Interactive Visualizer Engine Card -->
+        <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 16px; margin-bottom: 20px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                <span class="metric-label" style="margin-bottom: 0;">📉 Performance Insights</span>
+                <select id="chart-view-mode" class="chart-selector" onchange="window.floorPace.renderMetricsChart()">
+                    <option value="alltime" selected>All-Time Trend</option>
+                    <option value="weekly">Last 7 Active Days</option>
+                    <option value="dayofweek">Day of Week Profile</option>
+                </select>
+            </div>
+            <div style="position: relative; width: 100%; height: 180px;">
+                <canvas id="home-performance-canvas" style="width: 100%; height: 100%; display: block;"></canvas>
+            </div>
+        </div>
+
+        <!-- Backups Management -->
+        <div style="background: #151515; padding: 16px; border-radius: 16px; border: 1px solid #252525; margin-bottom: 20px;">
+            <h4 style="font-size: 0.9rem; margin-bottom: 10px; color: #aaa;">📊 Database Management & Backups</h4>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <button class="btn-secondary" style="background-color: #1565C0; padding: 12px;" onclick="window.floorPace.exportData()">📤 Backup to CSV</button>
+                <button class="btn-secondary" style="background-color: #2E7D32; padding: 12px;" onclick="window.floorPace.importData()">📥 Import Excel CSV</button>
+            </div>
+        </div>
+
+        <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;">
+            <span>📋 Historical Shift Registry <span style="font-size:0.8rem; font-weight:normal; color:#888;">(Click to expand)</span></span>
+            <button class="btn-secondary" style="background-color: #441111; font-size: 0.75rem; padding: 4px 8px;" onclick="if(confirm('Wipe ALL database history? Clear duplicates first?')) window.floorPace.clearLiveShift(true)">Clear All</button>
+        </h3>
+        <div id="home-history-list">
+            <p style="color: var(--text-muted); font-size: 0.85rem; text-align: center; padding: 20px;">No records yet.</p>
+        </div>
+    </div>
+
+    <!-- SCREEN 2: ACTIVE LIVE TRACKER SHIFT MODE -->
+    <div id="screen-tracker" class="app-screen">
+        <header>
+            <div>
+                <button class="btn-secondary" style="background-color: #333; padding: 6px 12px; margin-bottom: 6px; font-size: 0.75rem;" onclick="window.floorPace.navigateToScreen('home')">⬅️ Back to Home Hub</button>
+                <h1 style="color: #4fc3f7;">Live Tracking Session</h1>
+                <p style="color: var(--text-muted); font-size: 0.85rem;" id="shift-clock">Shift started: --:--</p>
+            </div>
+        </header>
+
+        <div id="break-status-banner" style="display: none; background: linear-gradient(95deg, #EF6C00, #E65100); color: white; border-radius: 12px; padding: 16px; margin-bottom: 16px; font-weight: bold; justify-content: space-between; align-items: center; z-index: 9999;"></div>
+
+        <!-- Configurations Panel -->
+        <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 16px; margin-bottom: 20px; display: flex; flex-wrap: wrap; gap: 12px; align-items: center;">
+            <div style="flex: 1; min-width: 130px;">
+                <label style="color: var(--text-muted); font-size: 0.75rem; display: block; margin-bottom: 4px; font-weight: bold;">SHIFT TARGET PACE</label>
+                <select id="config-target-pace" onchange="window.floorPace.updateShiftTarget()" style="width: 100%; height: 36px; background-color: #000; border: 1px solid #444; border-radius: 8px; color: #fff; padding: 0 6px;">
+                    <option value="15" selected>15 Picks / Hour</option>
+                    <option value="16">16 Picks / Hour</option>
+                    <option value="18">18 Picks / Hour</option>
+                    <option value="20">20 Picks / Hour</option>
+                </select>
+            </div>
+            <div style="flex: 1; min-width: 130px;">
+                <label style="color: var(--text-muted); font-size: 0.75rem; display: block; margin-bottom: 4px; font-weight: bold;">SHIFT HOURS</label>
+                <select id="config-shift-hours" onchange="window.floorPace.updateShiftTarget()" style="width: 100%; height: 36px; background-color: #000; border: 1px solid #444; border-radius: 8px; color: #fff; padding: 0 6px;">
+                    <option value="6">6 Hours</option>
+                    <option value="8" selected>8 Hours</option>
+                    <option value="10">10 Hours</option>
+                </select>
+            </div>
+            <div style="flex: 1; min-width: 140px;">
+                <label style="color: var(--text-muted); font-size: 0.75rem; display: block; margin-bottom: 4px; font-weight: bold;">TAG COLOR</label>
+                <select id="global-tag-select" style="width: 100%; height: 36px; background-color: #000; border: 1px solid #444; border-radius: 8px; color: #fff; padding: 0 6px;">
+                    <option value="White Tag" selected>⚪ White Tag</option>
+                    <option value="Green Tag">🟢 Green Tag</option>
+                </select>
+            </div>
+            <div style="flex: 1; min-width: 160px;">
+                <label style="color: var(--text-muted); font-size: 0.75rem; display: block; margin-bottom: 4px; font-weight: bold;">WAREHOUSE SECTION</label>
+                <select id="global-zone-select" onchange="logSectionChange(this.value)" style="width: 100%; height: 36px; background-color: #000; border: 1px solid #444; border-radius: 8px; color: #fff; padding: 0 6px;">
+                    <option value="Customer" selected>📍 Customer</option>
+                    <option value="Bifolds">📍 Bifolds</option>
+                    <option value="Long">📍 Long</option>
+                    <option value="Shower Doors">📍 Shower Doors</option>
+                    <option value="Building 61">📍 Building 61</option>
+                    <option value="Aisle 6/7">📍 Aisle 6/7</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Active Staged Card -->
+        <div id="active-list-card" style="display: none; background: linear-gradient(135deg, #1A237E, #0D47A1); border: 1px solid #29B6F6; border-radius: 20px; padding: 20px; margin-bottom: 20px; flex-direction: column; gap: 14px;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <span style="color: #81D4FA; font-size: 0.75rem; font-weight: bold;">ACTIVE ASSIGNMENT STAGED</span>
+                    <span id="active-list-notes" style="font-size: 0.9rem; color: #E0F7FA;">Ready...</span>
+                </div>
+                <button onclick="abandonActiveList()" style="background: rgba(255,255,255,0.1); border: none; color: #FFCDD2; border-radius: 50%; width: 36px; height: 36px; cursor: pointer;">✕</button>
+            </div>
+            <div style="display: flex; align-items: baseline; gap: 6px;">
+                <span id="active-list-count" style="font-size: 3rem; font-weight: 900; line-height: 1;">0</span>
+                <span style="color: #B3E5FC; font-size: 1.1rem; font-weight: 600;">Picks Scheduled</span>
+            </div>
+            <button id="active-transfer-toggle" onclick="toggleActiveTransfer()" style="height: 44px; background: rgba(21,101,192,0.4); border: 1px dashed #29B6F6; border-radius: 12px; color: #FFF; font-weight: bold; cursor: pointer;">🔄 Toggle Transfer Note</button>
+            <button onclick="completeActiveList()" style="background-color: #FFF; color: #0D47A1; border: none; border-radius: 12px; height: 50px; font-size: 1rem; font-weight: 700; cursor: pointer;">('🗹 SEAL & ARCHIVE ACTIVE PICK')</button>
+        </div>
+
+        <!-- Live Scoreboard Grid -->
+        <div class="metric-grid">
+            <div class="metric-card">
+                <span class="metric-label">Current Pace</span>
+                <span class="metric-value" id="stat-pace">0.0<span style="font-size: 1rem; color: var(--text-muted);">/hr</span></span>
+            </div>
+            <div class="metric-card">
+                <span class="metric-label">Shift Total Logs</span>
+                <span class="metric-value" id="stat-total">0</span>
+            </div>
+            <div class="metric-card">
+                <span class="metric-label">Session Elapsed</span>
+                <span class="metric-value" id="stat-elapsed">0h 0m</span>
+            </div>
+            <div class="metric-card">
+                <span class="metric-label">Needed to Target</span>
+                <span class="metric-value" id="stat-needed">0</span>
+            </div>
+        </div>
+
+        <div class="progress-container">
+            <div style="display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 600;">
+                <span style="color: var(--text-muted);">Shift Quota Progress</span>
+                <span id="stat-progress-text">0 / 120 Picks</span>
+            </div>
+            <div class="progress-bar-bg">
+                <div class="progress-bar-fill" id="stat-progress-fill"></div>
+            </div>
+        </div>
+
+        <div id="live-delay-warning" style="display: none; padding: 14px; border-radius: 12px; margin-bottom: 16px; font-weight: bold; text-align: center;"></div>
+
+        <!-- Delays -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px;">
+            <button id="btn-break-10" class="break-btn" style="background-color: #E65100; padding: 10px; color: white; border-radius: 12px; border: none;" onclick="window.floorPace.startBreak('10-Min Break')">☕ 10-MIN BREAK</button>
+            <button id="btn-break-lunch" class="break-btn" style="background-color: #BF360C; padding: 10px; color: white; border-radius: 12px; border: none;" onclick="window.floorPace.startBreak('Lunch')">🍱 LUNCH</button>
+            <button id="btn-break-bathroom" class="break-btn" style="background-color: #7B1FA2; padding: 10px; color: white; border-radius: 12px; border: none;" onclick="window.floorPace.startBreak('Bathroom Break')">🧻 BATHROOM</button>
+            <button id="btn-break-cleanup" class="break-btn" style="background-color: #455A64; padding: 10px; color: white; border-radius: 12px; border: none;" onclick="window.floorPace.startBreak('Cleanup')">🧹 CLEANUP</button>
+        </div>
+
+        <nav class="nav-tabs">
+            <button class="tab-btn active" onclick="switchTab('dashboard')">Tracking Actions</button>
+            <button class="tab-btn" onclick="switchTab('history')">Current Shift Logs</button>
+        </nav>
+
+        <div id="tab-dashboard" class="tab-content active">
+            <div style="background-color: var(--bg-card); border: 2px dashed #333; border-radius: 16px; padding: 20px; margin-bottom: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 120px; text-align: center; position: relative;">
+                <span style="font-size: 1.75rem; margin-bottom: 4px;">📷</span>
+                <span style="font-size: 0.9rem; font-weight: bold;">SCAN LIST BARCODE HEADER</span>
+                <input type="file" accept="image/*" capture="environment" id="camera-file-input" onchange="handleCameraScan(this)" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer;">
+            </div>
+            <button class="btn-giant" onclick="openManualEntry()">➕ STAGE NEW PICK MANUALLY</button>
+            <button class="btn-giant" style="background-color: var(--accent-purple); margin-top: 16px;" onclick="window.floorPace.sealShiftSession()">🔒 COMPLETE & SEAL FULL SHIFT</button>
+        </div>
+
+        <div id="tab-history" class="tab-content">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                <h3 style="font-size: 1rem; font-weight: 700;">Running Shift Timeline</h3>
+                <button class="btn-secondary" style="background-color: #C62828; padding: 6px 12px; font-size: 0.8rem;" onclick="if(confirm('Wipe current unsealed running shift data?')) window.floorPace.clearLiveShift(false)">Wipe Active Data</button>
+            </div>
+            <div id="live-history-list"></div>
+        </div>
+    </div>
+
+    <!-- MODAL -->
+    <div id="manual-modal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0,0,0,0.85); z-index: 1000; align-items: center; justify-content: center;">
+        <div style="background-color: var(--bg-card); width: 90%; max-width: 450px; border-radius: 24px; padding: 24px; border: 1px solid #333;">
+            <h3 style="text-align: center; margin-bottom: 16px;">Log Manual Pick</h3>
+            <input type="number" id="manual-count-input" pattern="\d*" style="width: 100%; height: 64px; background-color: #000; border: 2px solid #444; border-radius: 12px; color: #fff; font-size: 1.8rem; text-align: center; margin-bottom: 12px;" placeholder="0">
+            <div style="margin-bottom: 16px;">
+                <label style="background: #2A1A00; border: 1px solid #FF9800; padding: 12px; border-radius: 12px; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.85rem; color: #FFB74D;">
+                    <input type="checkbox" id="manual-test-check" style="width: 18px; height: 18px; accent-color: #FF9800;">
+                    <span>🧪 Simulation/Test Mode</span>
+                </label>
+            </div>
+            <input type="text" id="manual-notes-input" style="width: 100%; height: 44px; background-color: #000; border: 1px solid #444; border-radius: 12px; color: #fff; padding: 0 12px; margin-bottom: 24px;" placeholder="Optional details...">
+            <div style="display: flex; gap: 12px;">
+                <button class="btn-secondary" onclick="closeManualEntry()" style="flex: 1; background-color: #333;">Cancel</button>
+                <button class="btn-giant" onclick="submitManualEntry()" style="flex: 2; height: 64px; margin: 0;">STAGE PICK</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class FloorPaceEngine {
+            constructor() {
+                this.dbName = "FloorPaceDataStore";
+                this.dbVersion = 5;
+                this.db = null;
+                this.targetPacePerHour = 15;
+                this.totalShiftTargetHours = 8;
+                this.shiftTotalGoal = 120;
+                
+                this.currentShiftSessionId = null;
+                this.shiftStartTime = null;
+                this.entries = [];
+                
+                this.totalBreakDeductionMs = 0;
+                this.isOnBreak = false;
+                this.breakStartTime = null;
+                this.initDB();
+            }
+            initDB() {
+                const request = indexedDB.open(this.dbName, this.dbVersion);
+                request.onupgradeneeded = (event) => {
+                    const db = event.target.result;
+                    if (!db.objectStoreNames.contains("logs")) {
+                        db.createObjectStore("logs", { keyPath: "id", autoIncrement: true });
+                    }
+                };
+                request.onsuccess = (event) => {
+                    this.db = event.target.result;
+                    this.loadEntriesFromStorage();
+                };
+            }
+            loadEntriesFromStorage(callback) {
+                if (!this.db) return;
+                const transaction = this.db.transaction(["logs"], "readonly");
+                const store = transaction.objectStore("logs");
+                const request = store.getAll();
+                request.onsuccess = () => {
+                    this.entries = request.result || [];
+                    
+                    const activeUnsealedRecord = this.entries.find(e => e.status === "active");
+                    if (activeUnsealedRecord) {
+                        this.currentShiftSessionId = activeUnsealedRecord.sessionId || "session_default";
+                        const sessionGroup = this.entries.filter(e => e.sessionId === this.currentShiftSessionId);
+                        if(sessionGroup.length > 0 && sessionGroup[0].rawTimestamp) {
+                            this.shiftStartTime = new Date(sessionGroup[0].rawTimestamp);
+                            document.getElementById('shift-clock').innerText = `Shift started: ${this.shiftStartTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+                            this.navigateToScreen('tracker');
+                        }
+                    }
+                    this.updateShiftTarget();
+                    this.renderHomeHubRegistry();
+                    if(callback) callback();
+                };
+            }
+            navigateToScreen(screenId) {
+                document.querySelectorAll('.app-screen').forEach(scr => scr.classList.remove('active'));
+                document.getElementById(`screen-${screenId}`).classList.add('active');
+                if(screenId === 'home') {
+                    this.renderMetricsChart();
+                }
+            }
+            startNewShiftSession() {
+                this.currentShiftSessionId = "shift_" + Date.now();
+                this.shiftStartTime = new Date();
+                this.totalBreakDeductionMs = 0;
+                this.isOnBreak = false;
+                
+                document.getElementById('shift-clock').innerText = `Shift started: ${this.shiftStartTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+                this.addEntry(0, "🏁 New Active Work Session Initialized.");
+                this.navigateToScreen('tracker');
+            }
+            updateShiftTarget() {
+                const paceDropdown = document.getElementById('config-target-pace');
+                const hoursDropdown = document.getElementById('config-shift-hours');
+                if (paceDropdown && hoursDropdown) {
+                    this.targetPacePerHour = parseInt(paceDropdown.value) || 15;
+                    this.totalShiftTargetHours = parseInt(hoursDropdown.value) || 8;
+                    this.shiftTotalGoal = this.targetPacePerHour * this.totalShiftTargetHours;
+                    this.recalculateMetrics();
+                }
+            }
+            startBreak(breakType) {
+                if (this.isOnBreak) return;
+                this.isOnBreak = true;
+                this.breakStartTime = new Date();
+                ['btn-break-10', 'btn-break-lunch', 'btn-break-bathroom', 'btn-break-cleanup'].forEach(id => {
+                    const btn = document.getElementById(id);
+                    if (btn) { btn.disabled = true; btn.style.opacity = "0.4"; }
+                });
+                const banner = document.getElementById('break-status-banner');
+                if (banner) {
+                    banner.style.display = 'flex';
+                    banner.innerHTML = `<div>⏸️ ON ${breakType.toUpperCase()} (<span id="break-timer-display">00:00</span>)</div>
+                        <button onclick="window.floorPace.endBreak('${breakType}')" style="background: white; color: #000; border: none; padding: 6px 12px; border-radius: 8px; font-weight: bold;">RESUME</button>`;
+                }
+                this.addEntry(0, `⏸️ Paused pace math for: ${breakType}.`);
+            }
+            endBreak(breakType) {
+                if (!this.isOnBreak) return;
+                const now = new Date();
+                this.totalBreakDeductionMs += (now - this.breakStartTime);
+                this.isOnBreak = false;
+                this.breakStartTime = null;
+                const banner = document.getElementById('break-status-banner');
+                if (banner) banner.style.display = 'none';
+                [['btn-break-10', '☕ 10-MIN BREAK'], ['btn-break-lunch', '🍱 LUNCH'], ['btn-break-bathroom', '🧻 BATHROOM'], ['btn-break-cleanup', '🧹 CLEANUP']].forEach(cfg => {
+                    const btn = document.getElementById(cfg[0]);
+                    if (btn) { btn.disabled = false; btn.style.opacity = "1"; btn.innerText = cfg[1]; }
+                });
+                this.addEntry(0, `🏁 Ended ${breakType}.`);
+            }
+            addEntry(count, notes = "", startTimeStr = null) {
+                if (!this.db) return;
+                const now = new Date();
+                const logTime = startTimeStr ? startTimeStr : now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                const isTest = startTimeStr && window.currentActiveList && window.currentActiveList.testMode;
+                
+                const newRecord = {
+                    sessionId: this.currentShiftSessionId || "historical_ledger",
+                    count: parseInt(count),
+                    notes: notes || "Pick log entry",
+                    timestamp: logTime,
+                    rawTimestamp: now.toISOString(),
+                    status: isTest ? "test" : "active"
+                };
+                const transaction = this.db.transaction(["logs"], "readwrite");
+                const store = transaction.objectStore("logs");
+                const request = store.add(newRecord);
+                request.onsuccess = () => {
+                    this.entries.push({ ...newRecord, id: request.result });
+                    this.recalculateMetrics();
+                    this.renderHomeHubRegistry();
+                };
+            }
+            sealShiftSession() {
+                if (!this.db || !this.currentShiftSessionId) return;
+                if (!confirm("Complete and lock this shift? This saves it cleanly onto your Home dashboard history logs.")) return;
+                
+                const transaction = this.db.transaction(["logs"], "readwrite");
+                const store = transaction.objectStore("logs");
+                
+                this.entries.forEach(entry => {
+                    if (entry.sessionId === this.currentShiftSessionId) {
+                        entry.status = "sealed";
+                        store.put(entry);
+                    }
+                });
+                transaction.oncomplete = () => {
+                    alert("Shift packed up and recorded cleanly!");
+                    this.currentShiftSessionId = null;
+                    this.shiftStartTime = null;
+                    this.loadEntriesFromStorage(() => {
+                        this.navigateToScreen('home');
+                    });
+                };
+            }
+            clearLiveShift(wipeAll = false) {
+                if (!this.db) return;
+                const transaction = this.db.transaction(["logs"], "readwrite");
+                const store = transaction.objectStore("logs");
+                
+                if (wipeAll) {
+                    store.clear().onsuccess = () => {
+                        this.entries = [];
+                        this.currentShiftSessionId = null;
+                        this.loadEntriesFromStorage();
+                    };
+                } else {
+                    const activeIds = this.entries.filter(e => e.sessionId === this.currentShiftSessionId).map(e => e.id);
+                    activeIds.forEach(id => store.delete(id));
+                    transaction.oncomplete = () => {
+                        this.entries = this.entries.filter(e => e.sessionId !== this.currentShiftSessionId);
+                        this.recalculateMetrics();
+                        this.renderHomeHubRegistry();
+                    };
+                }
+            }deleteShiftSession(sessionId) {
+        if (!this.db) return;
+        if (!confirm("Are you sure you want to delete this specific shift session entirely? This cannot be undone.")) return;
+
+        const transaction = this.db.transaction(["logs"], "readwrite");
+        const store = transaction.objectStore("logs");
+        
+        const entryIdsToDelete = this.entries.filter(e => (e.sessionId || "legacy_archive") === sessionId).map(e => e.id);
+        entryIdsToDelete.forEach(id => store.delete(id));
+
+        transaction.oncomplete = () => {
+            alert("Shift session successfully deleted.");
+            this.loadEntriesFromStorage();
+        };
+    }
+            
+            getCompiledSessions() {
+                const sessionsMap = {};
+                this.entries.forEach(entry => {
+                    if (entry.status === "test") return;
+                    const sid = entry.sessionId || "legacy_archive";
+                    if (!sessionsMap[sid]) {
+                        let parsedDateStr = "Historical";
+                        let dateObj = new Date();
+                        if(entry.rawTimestamp) {
+                            parsedDateStr = entry.rawTimestamp.slice(0,10);
+                            dateObj = new Date(entry.rawTimestamp);
+                        }
+                        sessionsMap[sid] = {
+                            id: sid,
+                            dateStr: parsedDateStr,
+                            dateObject: dateObj,
+                            totalPicks: 0,
+                            isImported: (entry.notes && entry.notes.includes("Import")) || sid.startsWith("imported_")
+                        };
+                    }
+                    sessionsMap[sid].totalPicks += (entry.count || 0);
+                });
+                return Object.values(sessionsMap).sort((a,b) => a.dateObject - b.dateObject);
+            }
+
+            renderHomeHubRegistry() {
+                const homeList = document.getElementById('home-history-list');
+                if (!homeList) return;
+                
+                const sessionsMap = {};
+                let overallLifetimePicks = 0;
+                
+                this.entries.forEach(entry => {
+                    if (entry.status === "test") return;
+                    overallLifetimePicks += (entry.count || 0);
+                    
+                    const sid = entry.sessionId || "legacy_archive";
+                    if (!sessionsMap[sid]) {
+                        sessionsMap[sid] = {
+                            id: sid,
+                            date: entry.rawTimestamp ? entry.rawTimestamp.slice(0,10) : "Historical",
+                            totalPicks: 0,
+                            isImported: (entry.notes && entry.notes.includes("Import")) || sid.startsWith("imported_"),
+                            timeline: []
+                        };
+                    }
+                    sessionsMap[sid].totalPicks += (entry.count || 0);
+                    if (entry.count > 0) {
+                        sessionsMap[sid].timeline.push({
+                            count: entry.count,
+                            timestamp: entry.timestamp,
+                            notes: entry.notes
+                        });
+                    }
+                });
+                
+                const totalSessions = Object.keys(sessionsMap).length;
+                document.getElementById('home-stat-lifetime-picks').innerText = overallLifetimePicks;
+                document.getElementById('home-stat-shift-count').innerText = totalSessions;
+                
+                const avgPicks = totalSessions > 0 ? (overallLifetimePicks / totalSessions).toFixed(1) : "0.0";
+                document.getElementById('home-stat-avg-picks').innerHTML = `${avgPicks} <span style="font-size:0.9rem; font-weight:normal; color:#888;">items / session</span>`;
+                
+                if (totalSessions === 0) {
+                    homeList.innerHTML = `<p style="color: var(--text-muted); font-size: 0.85rem; text-align: center; padding: 20px;">No historical shifts archived yet.</p>`;
+                    this.renderMetricsChart();
+                    return;
+                }
+                
+                homeList.innerHTML = "";
+                Object.values(sessionsMap).reverse().forEach(session => {
+                    const row = document.createElement('div');
+                    row.className = "history-item";
+                    row.style.borderLeft = session.isImported ? "4px solid #444" : "4px solid var(--accent-blue)";
+                    
+                    let timelineHtml = "";
+                    if (session.isImported) {
+                        timelineHtml = `<div class="timeline-row" style="color: #888; font-style: italic;">🔒 Summary Log Sheet Protected (Historical Backload Override)</div>`;
+                    } else if (session.timeline.length === 0) {
+                        timelineHtml = `<div class="timeline-row" style="color: #888;">No items logged during this timeline framework.</div>`;
+                    } else {
+                        session.timeline.forEach(t => {
+                            timelineHtml += `
+                                <div class="timeline-row">
+                                    <span>📦 <b>${t.count} picks</b> - ${t.notes}</span>
+                                    <span style="color: #4fc3f7;">${t.timestamp}</span>
+                                </div>`;
+                        });
+                    }
+
+                    row.innerHTML = `
+                        <div class="history-summary" onclick="this.parentElement.querySelector('.history-details').classList.toggle('expanded')">
+                            <div>
+                                <div style="font-weight: bold; font-size: 1rem; color: #FFF;">📈 ${session.totalPicks} Total Registered Picks ${session.isImported ? '🔒' : ''}</div>
+                                <div style="color: var(--text-muted); font-size: 0.8rem; margin-top: 2px;">${session.isImported ? 'Spreadsheet Backup File Override Record' : 'Tap to toggle timeframes timeline'}</div>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 12px;">
+    <div style="color: #4fc3f7; font-size: 0.85rem; font-weight: bold;">${session.date}</div>
+    <button onclick="event.stopPropagation(); window.floorPace.deleteShiftSession('${session.id}')" style="background: none; border: none; color: #ff5252; cursor: pointer; font-size: 1.1rem; padding: 4px;">🗑️</button>
+</div>
+                        </div>
+                        <div class="history-details">
+                            ${timelineHtml}
+                        </div>
+                    `;
+                    homeList.appendChild(row);
+                });
+                
+                this.renderMetricsChart();
+            }
+
+            renderMetricsChart() {
+                const canvas = document.getElementById('home-performance-canvas');
+                if (!canvas) return;
+                const ctx = canvas.getContext('2d');
+                
+                const dpr = window.devicePixelRatio || 1;
+                const rect = canvas.getBoundingClientRect();
+                canvas.width = rect.width * dpr;
+                canvas.height = rect.height * dpr;
+                ctx.scale(dpr, dpr);
+                
+                const w = rect.width;
+                const h = rect.height;
+                ctx.clearRect(0, 0, w, h);
+
+                const compiledSessions = this.getCompiledSessions();
+                if (compiledSessions.length === 0) {
+                    ctx.fillStyle = "#888888";
+                    ctx.font = "13px sans-serif";
+                    ctx.textAlign = "center";
+                    ctx.fillText("Data visualization updates automatically once shifts are added.", w / 2, h / 2);
+                    return;
+                }
+
+                const viewMode = document.getElementById('chart-view-mode').value;
+                const paddingLeft = 35;
+                const paddingRight = 15;
+                const paddingTop = 20;
+                const paddingBottom = 25;
+                const graphWidth = w - paddingLeft - paddingRight;
+                const graphHeight = h - paddingTop - paddingBottom;
+
+                if (viewMode === "alltime") {
+                    // 1. ALL TIME TREND LINE
+                    let maxPicks = Math.max(...compiledSessions.map(s => s.totalPicks), 50);
+                    
+                    // Draw axis grid line rules
+                    ctx.strokeStyle = "#222";
+                    ctx.lineWidth = 1;
+                    ctx.beginPath();
+                    ctx.moveTo(paddingLeft, paddingTop);
+                    ctx.lineTo(paddingLeft + graphWidth, paddingTop);
+                    ctx.moveTo(paddingLeft, paddingTop + graphHeight / 2);
+                    ctx.lineTo(paddingLeft + graphWidth, paddingTop + graphHeight / 2);
+                    ctx.stroke();
+
+                    // Left Axis Labels
+                    ctx.fillStyle = "#666";
+                    ctx.font = "10px sans-serif";
+                    ctx.textAlign = "right";
+                    ctx.fillText(maxPicks, paddingLeft - 6, paddingTop + 3);
+                    ctx.fillText(Math.floor(maxPicks / 2), paddingLeft - 6, paddingTop + (graphHeight / 2) + 3);
+
+                    // Line Generation Plotting Loop
+                    ctx.strokeStyle = "#1565C0";
+                    ctx.lineWidth = 3;
+                    ctx.beginPath();
+
+                    compiledSessions.forEach((session, i) => {
+                        const x = paddingLeft + (i / Math.max(compiledSessions.length - 1, 1)) * graphWidth;
+                        const y = paddingTop + graphHeight - (session.totalPicks / maxPicks) * graphHeight;
+                        if (i === 0) ctx.moveTo(x, y);
+                        else ctx.lineTo(x, y);
+                    });
+                    ctx.stroke();
+
+                    // Label Start & End
+                    ctx.fillStyle = "#aaa";
+                    ctx.textAlign = "left";
+                    ctx.fillText(compiledSessions[0].dateStr.slice(5), paddingLeft, h - 8);
+                    ctx.textAlign = "right";
+                    ctx.fillText(compiledSessions[compiledSessions.length-1].dateStr.slice(5), w - paddingRight, h - 8);
+
+                } else if (viewMode === "weekly") {
+                    // 2. LAST 7 ACTIVE DAYS BAR CHART
+                    const recent = compiledSessions.slice(-7);
+                    let maxPicks = Math.max(...recent.map(s => s.totalPicks), 50);
+                    const barGap = 8;
+                    const barWidth = (graphWidth / recent.length) - barGap;
+
+                    recent.forEach((session, i) => {
+                        const x = paddingLeft + (i * (barWidth + barGap)) + (barGap / 2);
+                        const bh = (session.totalPicks / maxPicks) * graphHeight;
+                        const y = paddingTop + graphHeight - bh;
+
+                        // Create sleek linear look
+                        ctx.fillStyle = "#2E7D32";
+                        ctx.fillRect(x, y, barWidth, bh);
+
+                        // Top value tag
+                        ctx.fillStyle = "#fff";
+                        ctx.font = "10px sans-serif";
+                        ctx.textAlign = "center";
+                        ctx.fillText(session.totalPicks, x + barWidth / 2, y - 5);
+
+                        // Date Labels underneath
+                        ctx.fillStyle = "#666";
+                        ctx.fillText(session.dateStr.slice(5), x + barWidth / 2, h - 8);
+                    });
+
+                } else if (viewMode === "dayofweek") {
+                    // 3. DAY OF WEEK COMPREHENSIVE PROFILE
+                    const dayLabels = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+                    const daySums = Array(7).fill(0);
+                    const dayCounts = Array(7).fill(0);
+
+                    compiledSessions.forEach(s => {
+                        const dayIdx = s.dateObject.getDay();
+                        daySums[dayIdx] += s.totalPicks;
+                        dayCounts[dayIdx] += 1;
+                    });
+
+                    const dayAverages = daySums.map((sum, idx) => dayCounts[idx] > 0 ? Math.round(sum / dayCounts[idx]) : 0);
+                    let maxAvg = Math.max(...dayAverages, 50);
+
+                    const barGap = 6;
+                    const barWidth = (graphWidth / 7) - barGap;
+
+                    dayLabels.forEach((label, i) => {
+                        const x = paddingLeft + (i * (barWidth + barGap)) + (barGap / 2);
+                        const bh = (dayAverages[i] / maxAvg) * graphHeight;
+                        const y = paddingTop + graphHeight - bh;
+
+                        ctx.fillStyle = dayAverages[i] === maxAvg ? "#6A1B9A" : "#333333";
+                        ctx.fillRect(x, y, barWidth, bh);
+
+                        // Print average values directly on bars
+                        if (dayAverages[i] > 0) {
+                            ctx.fillStyle = "#fff";
+                            ctx.font = "10px sans-serif";
+                            ctx.textAlign = "center";
+                            ctx.fillText(dayAverages[i], x + barWidth / 2, y - 5);
+                        }
+
+                        // X-axis Day labels
+                        ctx.fillStyle = "#888";
+                        ctx.font = "10px sans-serif";
+                        ctx.textAlign = "center";
+                        ctx.fillText(label, x + barWidth / 2, h - 8);
+                    });
+                }
+            }
+
+            recalculateMetrics() {
+                const activeSessionRecords = this.entries.filter(e => e.sessionId === this.currentShiftSessionId);
+                let grandTotalPicks = 0;
+                activeSessionRecords.forEach(e => grandTotalPicks += e.count);
+                
+                const now = new Date();
+                let currentBreakAddition = 0;
+                if (this.isOnBreak && this.breakStartTime) {
+                    currentBreakAddition = now - this.breakStartTime;
+                    const bMin = Math.floor(currentBreakAddition / (1000 * 60));
+                    const bSec = Math.floor((currentBreakAddition / 1000) % 60).toString().padStart(2, '0');
+                    const timerDisplay = document.getElementById('break-timer-display');
+                    if (timerDisplay) timerDisplay.innerText = `${bMin}:${bSec}`;
+                }
+                
+                let diffMs = this.shiftStartTime ? (now - this.shiftStartTime - (this.totalBreakDeductionMs + currentBreakAddition)) : 0;
+                if (diffMs < 0) diffMs = 0;
+                
+                const totalHoursElapsed = diffMs / (1000 * 60 * 60) || 0.01;
+                const computedLivePace = grandTotalPicks / totalHoursElapsed;
+                const minutesElapsed = Math.floor(diffMs / (1000 * 60)) % 60;
+                const hoursElapsed = Math.floor(diffMs / (1000 * 60 * 60));
+                
+                let unitsLeftToTarget = this.shiftTotalGoal - grandTotalPicks;
+                if (unitsLeftToTarget < 0) unitsLeftToTarget = 0;
+                
+                document.getElementById('stat-pace').innerHTML = `${computedLivePace.toFixed(1)}<span style="font-size: 1rem; color: var(--text-muted);">/hr</span>`;
+                document.getElementById('stat-total').innerText = grandTotalPicks;
+                document.getElementById('stat-elapsed').innerText = `${hoursElapsed}h ${minutesElapsed}m`;
+                document.getElementById('stat-needed').innerText = unitsLeftToTarget;
+                document.getElementById('stat-progress-text').innerText = `${grandTotalPicks} / ${this.shiftTotalGoal} Picks`;
+                document.getElementById('stat-progress-fill').style.width = `${Math.min((grandTotalPicks / this.shiftTotalGoal) * 100, 100)}%`;
+                
+                const runningTimelineContainer = document.getElementById('live-history-list');
+                if (runningTimelineContainer) {
+                    runningTimelineContainer.innerHTML = "";
+                    [...activeSessionRecords].reverse().forEach(item => {
+                        const row = document.createElement('div');
+                        row.className = "history-item";
+                        if (item.status === "test") { row.style.background = "#1A1300"; row.style.borderColor = "#FF9800"; }
+                        row.innerHTML = `
+                            <div class="history-summary">
+                                <div>
+                                    <div style="font-weight: bold;">${item.count === 0 ? "📍 Action Pin" : `${item.count} Items`}</div>
+                                    <div style="color: var(--text-muted); font-size: 0.8rem;">${item.notes}</div>
+                                </div>
+                                <div style="color: var(--text-muted); font-size: 0.85rem;">${item.timestamp}</div>
+                            </div>
+                        `;
+                        runningTimelineContainer.appendChild(row);
+                    });
+                }
+            }
+            exportData() {
+                if (this.entries.length === 0) { alert("No logs found to export!"); return; }
+                const csvRows = [["Count","Notes","Timestamp","RawTimestamp","Status","SessionId","Date"].join(",")];
+                this.entries.forEach(log => {
+                    const dateString = log.rawTimestamp ? log.rawTimestamp.slice(0,10) : "";
+                    const row = [
+                        log.count,
+                        `"${(log.notes || "").replace(/"/g, '""')}"`,
+                        `"${log.timestamp || ""}"`,
+                        `"${log.rawTimestamp || ""}"`,
+                        `"${log.status || ""}"`,
+                        `"${log.sessionId || ""}"`,
+                        `"${dateString}"`
+                    ];
+                    csvRows.push(row.join(","));
+                });
+                const blob = new Blob([csvRows.join("\n")], { type: "text/csv;charset=utf-8;" });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `floorpace_master_backup_${new Date().toISOString().slice(0,10)}.csv`;
+                a.click();
+            }
+            importData() {
+                const picker = document.createElement('input');
+                picker.type = 'file';
+                picker.accept = '.csv';
+                picker.onchange = (e) => {
+                    const file = e.target.files[0];
+                    if (!file) return;
+                    const reader = new FileReader();
+                    reader.onload = (evt) => {
+                        try {
+                            const lines = evt.target.result.split(/\r?\n/).filter(l => l.trim() !== "");
+                            if (lines.length < 2) throw new Error("Invalid format.");
+                            
+                            const parseCSVRow = (textRow) => {
+                                const cells = []; let cell = ''; let quotes = false;
+                                for (let i = 0; i < textRow.length; i++) {
+                                    const c = textRow[i];
+                                    if (c === '"') { if (quotes && textRow[i+1] === '"') { cell += '"'; i++; } else quotes = !quotes; }
+                                    else if (c === ',' && !quotes) { cells.push(cell); cell = ''; }
+                                    else cell += c;
+                                }
+                                cells.push(cell); return cells;
+                            };
+                            
+                            const headers = parseCSVRow(lines[0]).map(h => h.trim().toLowerCase());
+                            const countIdx = headers.indexOf("count");
+                            const dateIdx = headers.indexOf("date");
+                            
+                            if (countIdx === -1) throw new Error("Column 'Count' missing.");
+                            
+                            const readTx = this.db.transaction(["logs"], "readonly");
+                            const readStore = readTx.objectStore("logs");
+                            readStore.getAll().onsuccess = (event) => {
+                                const accurateLogs = event.target.result || [];
+                                const existingIdsMap = {};
+                                accurateLogs.forEach(ent => {
+                                    if (ent.sessionId) existingIdsMap[ent.sessionId] = true;
+                                });
+
+                                const writeTx = this.db.transaction(["logs"], "readwrite");
+                                const writeStore = writeTx.objectStore("logs");
+                                
+                                let importedItemsCount = 0;
+
+                                for (let i = 1; i < lines.length; i++) {
+                                    const vals = parseCSVRow(lines[i]);
+                                    if (!vals[countIdx] || vals[countIdx].trim() === "") continue;
+                                    
+                                    let dateTxt = dateIdx !== -1 && vals[dateIdx] ? vals[dateIdx].trim().split(" ")[0] : "";
+                                    let finalIso = new Date().toISOString();
+                                    
+                                    if (dateTxt) {
+                                        if (dateTxt.includes("/")) {
+                                            const parts = dateTxt.split("/");
+                                            if (parts.length === 3) {
+                                                let year = parts[2].length === 2 ? "20" + parts[2] : parts[2];
+                                                dateTxt = `${year}-${parts[0].padStart(2,'0')}-${parts[1].padStart(2,'0')}`;
+                                            }
+                                        }
+                                        const parsedDate = new Date(dateTxt + "T12:00:00");
+                                        if (!isNaN(parsedDate.getTime())) {
+                                            finalIso = parsedDate.toISOString();
+                                        }
+                                    }
+                                    
+                                    const totalCountValue = parseInt(vals[countIdx]) || 0;
+                                    const sId = "imported_" + finalIso.slice(0,10).replace(/-/g,"_") + "_" + totalCountValue;
+                                    
+                                    if (existingIdsMap[sId]) {
+                                        continue; 
+                                    }
+                                    
+                                    writeStore.add({
+                                        sessionId: sId,
+                                        count: totalCountValue,
+                                        notes: "📊 Spreadsheet Backload Import",
+                                        timestamp: "Historical",
+                                        rawTimestamp: finalIso,
+                                        status: "sealed"
+                                    });
+                                    importedItemsCount++;
+                                    existingIdsMap[sId] = true;
+                                }
+                                
+                                writeTx.oncomplete = () => {
+                                    alert(`Import processed! Added ${importedItemsCount} unique shifts.`);
+                                    this.loadEntriesFromStorage();
+                                };
+                            };
+                        } catch (err) { alert("Parsing error: " + err.message); }
+                    };
+                    reader.readAsText(file);
+                };
+                picker.click();
+            }
+        }
+
+        function handleCameraScan(input) {
+            if (!input.files || input.files.length === 0) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                openManualEntry();
+                document.getElementById('manual-count-input').placeholder = "Scanning...";
+                if (typeof Tesseract !== 'undefined') {
+                    Tesseract.recognize(e.target.result, 'eng').then(({ data: { text } }) => {
+                        const match = text.match(/\b\d{1,2}\b/g);
+                        if (match) {
+                            const valid = match.map(Number).filter(n => n > 0 && n < 99);
+                            if (valid.length > 0) document.getElementById('manual-count-input').value = Math.max(...valid);
+                        }
+                    }).catch(() => { document.getElementById('manual-count-input').placeholder = "0"; });
+                }
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            const btn = Array.from(document.querySelectorAll('.tab-btn')).find(b => b.getAttribute('onclick').includes(tabId));
+            if (btn) btn.classList.add('active');
+            document.getElementById(`tab-${tabId}`).classList.add('active');
+        }
+        function openManualEntry() { document.getElementById('manual-modal').style.display = 'flex'; document.getElementById('manual-count-input').focus(); }
+        function closeManualEntry() { document.getElementById('manual-modal').style.display = 'none'; document.getElementById('manual-count-input').value = ''; document.getElementById('manual-test-check').checked = false; }
+        function submitManualEntry() {
+            const count = document.getElementById('manual-count-input').value;
+            const notes = document.getElementById('manual-notes-input').value;
+            const tag = document.getElementById('global-tag-select').value;
+            const isTest = document.getElementById('manual-test-check').checked;
+            if (count && parseInt(count) > 0) {
+                const start = window.currentActiveList ? window.currentActiveList.startTime : new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                window.currentActiveList = { count: parseInt(count), notes, tagType: tag, transfer: false, testMode: isTest, startTime: start };
+                updateActiveCardUI();
+                document.getElementById('active-list-card').style.display = 'flex';
+                closeManualEntry();
+            }
+        }
+        function toggleActiveTransfer() { if (window.currentActiveList) { window.currentActiveList.transfer = !window.currentActiveList.transfer; updateActiveCardUI(); } }
+        function updateActiveCardUI() {
+            if (!window.currentActiveList) return;
+            let text = `[${window.currentActiveList.tagType}]`;
+            const btn = document.getElementById('active-transfer-toggle');
+            if (window.currentActiveList.transfer) {
+                text += ` 🔄 TRANSFER`; btn.style.backgroundColor = "#E65100"; btn.innerText = "🔄 Transfer Run Staged";
+            } else {
+                btn.style.backgroundColor = "rgba(21, 101, 192, 0.4)"; btn.innerText = "🔄 Toggle Transfer Note";
+            }
+            if (window.currentActiveList.testMode) text += ` 🧪 TEST`;
+            document.getElementById('active-list-count').innerText = window.currentActiveList.count;
+            document.getElementById('active-list-notes').innerText = `${text} Started at ${window.currentActiveList.startTime}`;
+        }
+        function abandonActiveList() { if(confirm("Discard?")) { window.currentActiveList = null; document.getElementById('active-list-card').style.display = 'none'; } }
+        function completeActiveList() {
+            if (window.currentActiveList) {
+                let notes = `[${window.currentActiveList.tagType}]`;
+                if (window.currentActiveList.transfer) notes += " 🔄 TRANSFER RUN";
+                if (window.currentActiveList.notes) notes += ` - ${window.currentActiveList.notes}`;
+                window.floorPace.addEntry(window.currentActiveList.count, notes.trim(), window.currentActiveList.startTime);
+                window.currentActiveList = null;
+                document.getElementById('active-list-card').style.display = 'none';
+            }
+        }
+        function logSectionChange(zone) { window.floorPace.addEntry(0, `📍 Section: ${zone}`); }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            window.floorPace = new FloorPaceEngine();
+            window.addEventListener('resize', () => {
+                if(document.getElementById('screen-home').classList.contains('active')) {
+                    window.floorPace.renderMetricsChart();
+                }
+            });
+            setInterval(() => {
+                if (window.floorPace && window.floorPace.currentShiftSessionId) {
+                    window.floorPace.recalculateMetrics();
+                    const warning = document.getElementById('live-delay-warning');
+                    if (!warning || window.floorPace.isOnBreak) return;
+                    let last = window.floorPace.shiftStartTime;
+                    const active = window.floorPace.entries.filter(e => e.sessionId === window.floorPace.currentShiftSessionId);
+                    if (active.length > 0) last = new Date(active[active.length - 1].rawTimestamp);
+                    const mins = Math.floor((new Date() - last) / (1000 * 60));
+                    if (mins >= 25) {
+                        warning.style.display = 'block'; warning.style.backgroundColor = '#B71C1C'; warning.innerHTML = `⚠️ CRITICAL DELAY: ${mins} Mins Idle!`;
+                    } else if (mins >= 15) {
+                        warning.style.display = 'block'; warning.style.backgroundColor = '#E65100'; warning.innerHTML = `⏳ GAP WARNING: ${mins} Mins Idle.`;
+                    } else warning.style.display = 'none';
+                }
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
