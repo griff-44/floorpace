@@ -4,6 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>FloorPace Pro</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="40" height="40" style="vertical-align: middle;">
+    <circle cx="50" cy="50" r="46" fill="none" stroke="#212529" stroke-width="4"/>
+    <circle cx="50" cy="50" r="42" fill="#f8f9fa"/>
+    <path d="M 48 60 L 72 60" fill="none" stroke="#adb5bd" stroke-width="5" stroke-linecap="round"/>
+    <path d="M 48 60 L 48 22 L 68 22 A 11 11 0 0 1 68 44 L 48 44" fill="none" stroke="#495057" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M 40 14 L 40 60 M 18 60 L 40 60 M 22 48 L 40 48" fill="none" stroke="#212529" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="40" cy="68" r="8" fill="#212529" /><circle cx="40" cy="68" r="2.5" fill="#ced4da" />
+    <circle cx="64" cy="68" r="8" fill="#212529" /><circle cx="64" cy="68" r="2.5" fill="#ced4da" />
+</svg>
     <style>
         :root {
             --bg-dark: #000000;
@@ -79,18 +88,21 @@
             padding: 16px;
             margin-bottom: 20px;
         }
+
         .progress-bar-bg {
             background-color: #222;
-            height: 12px;
-            border-radius: 6px;
+            height: 25px; /* <-- CHANGED: This makes the bar much thicker */
+            border-radius: 12px; /* <-- CHANGED: Smooths the corners for the thicker bar */
             overflow: hidden;
             margin-top: 8px;
         }
+
         .progress-bar-fill {
-            background: linear-gradient(90deg, #1565C0, #1E88E5);
+            background-color: #ff4c4c; /* <-- CHANGED: Makes the bar start out Red */
             height: 100%;
             width: 0%;
-            transition: width 0.3s ease;
+            /* <-- CHANGED: Makes the bar glide smoothly and fade colors slowly */
+            transition: width 0.5s ease-in-out, background-color 0.5s ease-in-out;
         }
         .nav-tabs {
             display: flex;
@@ -324,6 +336,8 @@
             <div style="display: flex; align-items: baseline; gap: 6px;">
                 <span id="active-list-count" style="font-size: 3rem; font-weight: 900; line-height: 1;">0</span>
                 <span style="color: #B3E5FC; font-size: 1.1rem; font-weight: 600;">Picks Scheduled</span>
+                <button onclick="modifyActivePickAmount(-1)">-1</button>
+<button onclick="modifyActivePickAmount(1)">+1</button>
             </div>
             <button id="active-transfer-toggle" onclick="toggleActiveTransfer()" style="height: 44px; background: rgba(21,101,192,0.4); border: 1px dashed #29B6F6; border-radius: 12px; color: #FFF; font-weight: bold; cursor: pointer;">🔄 Toggle Transfer Note</button>
             <button onclick="completeActiveList()" style="background-color: #FFF; color: #0D47A1; border: none; border-radius: 12px; height: 50px; font-size: 1rem; font-weight: 700; cursor: pointer;">('🗹 SEAL & ARCHIVE ACTIVE PICK')</button>
@@ -637,29 +651,29 @@
                 const sessionsMap = {};
                 let overallLifetimePicks = 0;
                 
-                this.entries.forEach(entry => {
-                    if (entry.status === "test") return;
-                    overallLifetimePicks += (entry.count || 0);
-                    
-                    const sid = entry.sessionId || "legacy_archive";
-                    if (!sessionsMap[sid]) {
-                        sessionsMap[sid] = {
-                            id: sid,
-                            date: entry.rawTimestamp ? entry.rawTimestamp.slice(0,10) : "Historical",
-                            totalPicks: 0,
-                            isImported: (entry.notes && entry.notes.includes("Import")) || sid.startsWith("imported_"),
-                            timeline: []
-                        };
-                    }
-                    sessionsMap[sid].totalPicks += (entry.count || 0);
-                    if (entry.count > 0) {
-                        sessionsMap[sid].timeline.push({
-                            count: entry.count,
-                            timestamp: entry.timestamp,
-                            notes: entry.notes
-                        });
-                    }
-                });
+               this.entries.forEach(entry => {
+    if (entry.status === "test") return;
+    overallLifetimePicks += (entry.count || 0);
+    
+    const sid = entry.sessionId || "legacy_archive";
+    if (!sessionsMap[sid]) {
+        sessionsMap[sid] = {
+            id: sid,
+            date: entry.rawTimestamp ? entry.rawTimestamp.slice(0,10) : "Historical",
+            totalPicks: 0,
+            isImported: (entry.notes && entry.notes.includes("Import")) || sid.startsWith("imported_"),
+            timeline: []
+        };
+    }
+    sessionsMap[sid].totalPicks += (entry.count || 0);
+    
+    // FIX: Removed the "entry.count > 0" filter so breaks, pins, and section changes make it into history
+    sessionsMap[sid].timeline.push({
+        count: entry.count,
+        timestamp: entry.timestamp || "",
+        notes: entry.notes || ""
+    });
+});
                 
                 const totalSessions = Object.keys(sessionsMap).length;
                 document.getElementById('home-stat-lifetime-picks').innerText = overallLifetimePicks;
@@ -683,14 +697,36 @@
                     let timelineHtml = "";
                     if (session.isImported) {
                         timelineHtml = `<div class="timeline-row" style="color: #888; font-style: italic;">🔒 Summary Log Sheet Protected (Historical Backload Override)</div>`;
-                    } else if (session.timeline.length === 0) {
-                        timelineHtml = `<div class="timeline-row" style="color: #888;">No items logged during this timeline framework.</div>`;
-                    } else {
+                  } else {
                         session.timeline.forEach(t => {
+                            let displayContent = "";
+                            const notesText = t.notes || "";
+                            const notesLower = notesText.toLowerCase();
+
+                            if (t.count > 0) {
+                                // Keep original formatting for actual pick numbers
+                                displayContent = `📦 <b>${t.count} picks</b> - ${notesText}`;
+                            } else {
+                                // Strip box and "0 picks", swap in context emojis for breaks/logs instead
+                                if (notesLower.includes("bathroom") || notesLower.includes("restroom")) {
+                                    displayContent = ` ${notesText}`;
+                                } else if (notesLower.includes("lunch")) {
+                                    displayContent = ` ${notesText}`;
+                                } else if (notesLower.includes("break") || notesLower.includes("pause")) {
+                                    displayContent = ` ${notesText}`;
+                                } else if (notesLower.includes("cleanup") || notesLower.includes("clean")) {
+                                    displayContent = ` ${notesText}`;
+                                } else if (notesLower.includes("section") || notesLower.includes("zone")) {
+                                    displayContent = ` ${notesText}`;
+                                } else {
+                                    displayContent = ` ${notesText}`;
+                                }
+                            }
+
                             timelineHtml += `
                                 <div class="timeline-row">
-                                    <span>📦 <b>${t.count} picks</b> - ${t.notes}</span>
-                                    <span style="color: #4fc3f7;">${t.timestamp}</span>
+                                    <span>${displayContent}</span>
+                                    <span style="color: #4fc3f7;">${t.timestamp || ""}</span>
                                 </div>`;
                         });
                     }
@@ -890,8 +926,21 @@
                 document.getElementById('stat-elapsed').innerText = `${hoursElapsed}h ${minutesElapsed}m`;
                 document.getElementById('stat-needed').innerText = unitsLeftToTarget;
                 document.getElementById('stat-progress-text').innerText = `${grandTotalPicks} / ${this.shiftTotalGoal} Picks`;
-                document.getElementById('stat-progress-fill').style.width = `${Math.min((grandTotalPicks / this.shiftTotalGoal) * 100, 100)}%`;
+// Calculate the percentage
+                const progressPercent = Math.min((grandTotalPicks / this.shiftTotalGoal) * 100, 100);
                 
+                // Set the width of the bar
+                const progressBarFill = document.getElementById('stat-progress-fill');
+                progressBarFill.style.width = `${progressPercent}%`;
+
+                // Dynamic Color Logic
+                if (progressPercent < 50) {
+                    progressBarFill.style.backgroundColor = '#ff4c4c'; // Red
+                } else if (progressPercent < 100) {
+                    progressBarFill.style.backgroundColor = '#ffd700'; // Yellow
+                } else {
+                    progressBarFill.style.backgroundColor = '#32cd32'; // Green
+                }
                 const runningTimelineContainer = document.getElementById('live-history-list');
                 if (runningTimelineContainer) {
                     runningTimelineContainer.innerHTML = "";
@@ -935,7 +984,7 @@
                 a.download = `floorpace_master_backup_${new Date().toISOString().slice(0,10)}.csv`;
                 a.click();
             }
-            importData() {
+       importData() {
                 const picker = document.createElement('input');
                 picker.type = 'file';
                 picker.accept = '.csv';
@@ -961,66 +1010,54 @@
                             
                             const headers = parseCSVRow(lines[0]).map(h => h.trim().toLowerCase());
                             const countIdx = headers.indexOf("count");
-                            const dateIdx = headers.indexOf("date");
+                            const notesIdx = headers.indexOf("notes");
+                            const timeIdx = headers.indexOf("timestamp");
+                            const rawIdx = headers.indexOf("rawtimestamp");
+                            const statIdx = headers.indexOf("status");
+                            const sessIdx = headers.indexOf("sessionid");
                             
                             if (countIdx === -1) throw new Error("Column 'Count' missing.");
                             
+                            const parsedEntries = [];
+                            for (let i = 1; i < lines.length; i++) {
+                                const vals = parseCSVRow(lines[i]);
+                                // This keeps ALL lines, even breaks where count is 0
+                                if (!vals[countIdx] && vals[countIdx] !== "0") continue; 
+                                
+                                parsedEntries.push({
+                                    count: parseInt(vals[countIdx]) || 0,
+                                    notes: notesIdx !== -1 && vals[notesIdx] ? vals[notesIdx].replace(/(^"|"$)/g, '') : "",
+                                    timestamp: timeIdx !== -1 && vals[timeIdx] ? vals[timeIdx].replace(/(^"|"$)/g, '') : "",
+                                    rawTimestamp: rawIdx !== -1 && vals[rawIdx] ? vals[rawIdx].replace(/(^"|"$)/g, '') : new Date().toISOString(),
+                                    status: statIdx !== -1 && vals[statIdx] ? vals[statIdx].replace(/(^"|"$)/g, '') : "sealed",
+                                    sessionId: sessIdx !== -1 && vals[sessIdx] ? vals[sessIdx].replace(/(^"|"$)/g, '') : "imported_historic_" + i
+                                });
+                            }
+
+                            // Database integration
                             const readTx = this.db.transaction(["logs"], "readonly");
                             const readStore = readTx.objectStore("logs");
                             readStore.getAll().onsuccess = (event) => {
                                 const accurateLogs = event.target.result || [];
-                                const existingIdsMap = {};
+                                const existingRawTimes = {};
+                                // Use rawTimestamp to prevent importing duplicates
                                 accurateLogs.forEach(ent => {
-                                    if (ent.sessionId) existingIdsMap[ent.sessionId] = true;
+                                    if (ent.rawTimestamp) existingRawTimes[ent.rawTimestamp] = true;
                                 });
 
                                 const writeTx = this.db.transaction(["logs"], "readwrite");
                                 const writeStore = writeTx.objectStore("logs");
-                                
                                 let importedItemsCount = 0;
 
-                                for (let i = 1; i < lines.length; i++) {
-                                    const vals = parseCSVRow(lines[i]);
-                                    if (!vals[countIdx] || vals[countIdx].trim() === "") continue;
-                                    
-                                    let dateTxt = dateIdx !== -1 && vals[dateIdx] ? vals[dateIdx].trim().split(" ")[0] : "";
-                                    let finalIso = new Date().toISOString();
-                                    
-                                    if (dateTxt) {
-                                        if (dateTxt.includes("/")) {
-                                            const parts = dateTxt.split("/");
-                                            if (parts.length === 3) {
-                                                let year = parts[2].length === 2 ? "20" + parts[2] : parts[2];
-                                                dateTxt = `${year}-${parts[0].padStart(2,'0')}-${parts[1].padStart(2,'0')}`;
-                                            }
-                                        }
-                                        const parsedDate = new Date(dateTxt + "T12:00:00");
-                                        if (!isNaN(parsedDate.getTime())) {
-                                            finalIso = parsedDate.toISOString();
-                                        }
+                                parsedEntries.forEach(record => {
+                                    if (!existingRawTimes[record.rawTimestamp]) {
+                                        writeStore.add(record);
+                                        importedItemsCount++;
                                     }
-                                    
-                                    const totalCountValue = parseInt(vals[countIdx]) || 0;
-                                    const sId = "imported_" + finalIso.slice(0,10).replace(/-/g,"_") + "_" + totalCountValue;
-                                    
-                                    if (existingIdsMap[sId]) {
-                                        continue; 
-                                    }
-                                    
-                                    writeStore.add({
-                                        sessionId: sId,
-                                        count: totalCountValue,
-                                        notes: "📊 Spreadsheet Backload Import",
-                                        timestamp: "Historical",
-                                        rawTimestamp: finalIso,
-                                        status: "sealed"
-                                    });
-                                    importedItemsCount++;
-                                    existingIdsMap[sId] = true;
-                                }
+                                });
                                 
                                 writeTx.oncomplete = () => {
-                                    alert(`Import processed! Added ${importedItemsCount} unique shifts.`);
+                                    alert(`Import processed! Restored ${importedItemsCount} detailed log lines.`);
                                     this.loadEntriesFromStorage();
                                 };
                             };
@@ -1073,6 +1110,20 @@
             }
         }
         function toggleActiveTransfer() { if (window.currentActiveList) { window.currentActiveList.transfer = !window.currentActiveList.transfer; updateActiveCardUI(); } }
+        function modifyActivePickAmount(amountModifier) {
+            if (!window.currentActiveList) {
+                alert("No active pick session running!");
+                return;
+            }
+            let currentCount = parseInt(window.currentActiveList.count) || 0;
+            let newCount = currentCount + amountModifier;
+            
+            // Prevent dropping below 0 picks
+            window.currentActiveList.count = newCount < 0 ? 0 : newCount;
+            
+            // Update UI card display in real-time
+            updateActiveCardUI();
+        }
         function updateActiveCardUI() {
             if (!window.currentActiveList) return;
             let text = `[${window.currentActiveList.tagType}]`;
@@ -1115,9 +1166,9 @@
                     const active = window.floorPace.entries.filter(e => e.sessionId === window.floorPace.currentShiftSessionId);
                     if (active.length > 0) last = new Date(active[active.length - 1].rawTimestamp);
                     const mins = Math.floor((new Date() - last) / (1000 * 60));
-                    if (mins >= 25) {
+                    if (mins >= 30) {
                         warning.style.display = 'block'; warning.style.backgroundColor = '#B71C1C'; warning.innerHTML = `⚠️ CRITICAL DELAY: ${mins} Mins Idle!`;
-                    } else if (mins >= 15) {
+                    } else if (mins >= 20) {
                         warning.style.display = 'block'; warning.style.backgroundColor = '#E65100'; warning.innerHTML = `⏳ GAP WARNING: ${mins} Mins Idle.`;
                     } else warning.style.display = 'none';
                 }
