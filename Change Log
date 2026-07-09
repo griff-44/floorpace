@@ -1,0 +1,13 @@
+v0.1
+- Initial shift tracker
+- OCR logging
+- Dashboard
+- Historical storage
+
+v0.2
+- Added FloorPace branding and logo
+- Improved quota progress bar
+- Adjustable active pick amount
+- Fixed CSV import reliability
+- Expanded historical filtering
+- Increased reminder timing by 5 minutes
