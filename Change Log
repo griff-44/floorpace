@@ -4,10 +4,20 @@ v0.1
 - Dashboard
 - Historical storage
 
-v0.2
-- Added FloorPace branding and logo
-- Improved quota progress bar
-- Adjustable active pick amount
-- Fixed CSV import reliability
-- Expanded historical filtering
-- Increased reminder timing by 5 minutes
+V 0.2. 
+Added FloorPace logo
+Enhanced quota progress bar
+New Feature: Adjustable active pick amount
+Improved reliability and logic of the CSV import
+Expanded historical filtering
+Increased reminder timing by 5 minutes
+
+V 0.3
+Added physical tags option to Warehouse Section
+Added an Emergency/Medical Pause button added to the main tracker screen
+Fixed a glitch prevented deletion of shifts
+New Feature: Added end-of-shift notes 
+Staging notes can now be added manually before/after staging a pick
+Increased the selection of quick adjust numbers
+New Feature: Added Quick Pick buttons to instantly bypass staging
+Time Editor added, allowing retroactive adjustment of log timestamps
