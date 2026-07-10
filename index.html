@@ -14,6 +14,8 @@
     <circle cx="64" cy="68" r="8" fill="#212529" /><circle cx="64" cy="68" r="2.5" fill="#ced4da" />
 </svg>
     <style>
+        
+        
         :root {
             --bg-dark: #000000;
             --bg-card: #121212;
@@ -31,12 +33,15 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             -webkit-tap-highlight-color: transparent;
         }
+
+
         body {
             background-color: var(--bg-dark);
             color: var(--text-main);
             padding: 16px;
             padding-bottom: 40px;
         }
+        
         header {
             margin-bottom: 20px;
             display: flex;
@@ -320,6 +325,7 @@
                     <option value="Shower Doors">📍 Shower Doors</option>
                     <option value="Building 61">📍 Building 61</option>
                     <option value="Aisle 6/7">📍 Aisle 6/7</option>
+                    <option value="physical-tag">🏷️ Physical Tag</option>
                 </select>
             </div>
         </div>
@@ -336,9 +342,15 @@
             <div style="display: flex; align-items: baseline; gap: 6px;">
                 <span id="active-list-count" style="font-size: 3rem; font-weight: 900; line-height: 1;">0</span>
                 <span style="color: #B3E5FC; font-size: 1.1rem; font-weight: 600;">Picks Scheduled</span>
+            <button onclick="modifyActivePickAmount(-5)">-5</button>
+                <button onclick="modifyActivePickAmount(-3)">-3</button>
                 <button onclick="modifyActivePickAmount(-1)">-1</button>
 <button onclick="modifyActivePickAmount(1)">+1</button>
+<button onclick="modifyActivePickAmount(3)">+3</button>
+<button onclick="modifyActivePickAmount(5)">+5</button>
             </div>
+           <button onclick="editActiveNotes()" style="height: 44px; background: rgba(255,255,255,0.1); border: 1px solid #444; border-radius: 12px; color: #FFF; font-weight: bold; cursor: pointer; margin-bottom: 4px;">📝 Add / Edit Active Notes</button>
+           
             <button id="active-transfer-toggle" onclick="toggleActiveTransfer()" style="height: 44px; background: rgba(21,101,192,0.4); border: 1px dashed #29B6F6; border-radius: 12px; color: #FFF; font-weight: bold; cursor: pointer;">🔄 Toggle Transfer Note</button>
             <button onclick="completeActiveList()" style="background-color: #FFF; color: #0D47A1; border: none; border-radius: 12px; height: 50px; font-size: 1rem; font-weight: 700; cursor: pointer;">('🗹 SEAL & ARCHIVE ACTIVE PICK')</button>
         </div>
@@ -394,8 +406,29 @@
                 <span style="font-size: 0.9rem; font-weight: bold;">SCAN LIST BARCODE HEADER</span>
                 <input type="file" accept="image/*" capture="environment" id="camera-file-input" onchange="handleCameraScan(this)" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer;">
             </div>
+            <!-- INSTANT QUICK Pick BUTTONS -->
+        <div style="margin-bottom: 16px;">
+            <div style="font-size: 0.8rem; font-weight: bold; color: #888; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">⚡ Quick Pick (Bypass Staging)</div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px;">
+                <button onclick="instantDirectLog(1)" style="height: 40px; background: #26a69a; color: #FFF; border: none; border-radius: 10px; font-weight: bold; cursor: pointer;">+1 Pick</button>
+                <button onclick="instantDirectLog(2)" style="height: 40px; background: #00897b; color: #FFF; border: none; border-radius: 10px; font-weight: bold; cursor: pointer;">+2 Picks</button>
+                <button onclick="instantDirectLog(3)" style="height: 40px; background: #00695c; color: #FFF; border: none; border-radius: 10px; font-weight: bold; cursor: pointer;">+3 Picks</button>
+            </div>
+        </div>
+
             <button class="btn-giant" onclick="openManualEntry()">➕ STAGE NEW PICK MANUALLY</button>
             <button class="btn-giant" style="background-color: var(--accent-purple); margin-top: 16px;" onclick="window.floorPace.sealShiftSession()">🔒 COMPLETE & SEAL FULL SHIFT</button>
+       </div>
+
+        <!-- PASTE THIS EMERGENCY BUTTON RIGHT HERE -->
+        <button class="btn-medical-pause" onclick="triggerMedicalPause()" title="Emergency Medical Pause">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+        </button>
+        
+    </div> <!-- This is the end of the screen-tracker container -->
         </div>
 
         <div id="tab-history" class="tab-content">
@@ -405,6 +438,48 @@
             </div>
             <div id="live-history-list"></div>
         </div>
+        <!-- Inside your Live Tracking container -->
+<div id="live-tracking-screen">
+    
+    <!-- All your current live tracking metrics, timers, charts go here -->
+
+
+    <style>
+  /* Ensure the tracking screen acts as the boundary wall for the button */
+  #live-tracking-screen {
+      position: relative;
+  }
+
+  /* Discrete Medical Plus Button */
+  .btn-medical-pause {
+      position: absolute;
+      bottom: 12px;    
+    right: 12px;     
+      width: 26px;
+      height: 26px;
+
+      background: transparent; 
+      color: #4a4a4a; 
+      border: 1px solid #333333; 
+      border-radius: 6px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease-in-out;
+      z-index: 99999
+  }
+
+  /* Becomes visible and flashes medical warning red ONLY when hovered */
+  .btn-medical-pause:hover {
+      color: #ffffff;
+      background: #dc2626; 
+      border-color: #dc2626;
+      box-shadow: 0 0 10px rgba(220, 38, 38, 0.5);
+  }
+  
+</style>
+</div>
     </div>
 
     <!-- MODAL -->
@@ -427,6 +502,45 @@
     </div>
 
     <script>
+        // PASTE THIS FUNCTION DIRECTLY HERE AT THE TOP
+        function triggerMedicalPause() {
+            if (window.liveMetricsIntervalLoopId) {
+                clearInterval(window.liveMetricsIntervalLoopId);
+            }
+            if (window.floorPace) {
+                window.floorPace.currentShiftSessionId = null;
+            }
+            if (!document.getElementById('medical-emergency-banner')) {
+                const banner = document.createElement('div');
+                banner.id = 'medical-emergency-banner';
+                banner.style.position = 'fixed';
+                banner.style.top = '0';
+                banner.style.left = '0';
+                banner.style.width = '100vw';
+                banner.style.height = '100vh';
+                banner.style.backgroundColor = 'rgba(220, 38, 38, 0.98)';
+                banner.style.color = '#ffffff';
+                banner.style.zIndex = '999999';
+                banner.style.display = 'flex';
+                banner.style.flexDirection = 'column';
+                banner.style.alignItems = 'center';
+                banner.style.justifyContent = 'center';
+                banner.style.textAlign = 'center';
+                banner.style.padding = '20px';
+                
+                banner.innerHTML = `
+                    <h1 style="font-size: 2.8rem; margin-bottom: 15px; font-weight: 900; letter-spacing: 1px; line-height: 1.2;">🚨 MEDICAL EMERGENCY PAUSE</h1>
+                    <p style="font-size: 1.2rem; opacity: 0.9; margin-bottom: 40px; font-weight: 600; max-width: 500px;">SHIFT PACING ENGINE SUSPENDED AND TIMERS FROZEN.</p>
+                    <button onclick="location.reload();" 
+                            style="padding: 16px 36px; background: white; color: #dc2626; border: none; font-weight: 800; border-radius: 12px; cursor: pointer; font-size: 1.1rem; box-shadow: 0 4px 20px rgba(0,0,0,0.4);">
+                        Clear Emergency & Reload Hub
+                    </button>
+                `;
+                document.body.appendChild(banner);
+            }
+        }
+
+        // Your original "class FloorPaceEngine {" code continues right here...
         class FloorPaceEngine {
             constructor() {
                 this.dbName = "FloorPaceDataStore";
@@ -506,6 +620,7 @@
                     this.totalShiftTargetHours = parseInt(hoursDropdown.value) || 8;
                     this.shiftTotalGoal = this.targetPacePerHour * this.totalShiftTargetHours;
                     this.recalculateMetrics();
+                    
                 }
             }
             startBreak(breakType) {
@@ -561,9 +676,105 @@
                     this.renderHomeHubRegistry();
                 };
             }
+            // ========================================================
+    // ✏️ REAL-TIME ACTIVE LOG EDITING SYSTEM
+    // ========================================================
+
+    /**
+     * Triggers the user-facing modal to edit an entry's timestamp in the active shift log.
+     * @param {number} logId - The Numerical IndexedDB auto-increment ID of the log entry.
+     */
+    openActiveLogTimeEdit(logId) {
+        if (!this.db || !logId) return;
+
+        // 1. Fetch the specific record from IndexedDB safely first
+        const transaction = this.db.transaction(["logs"], "readonly");
+        const store = transaction.objectStore("logs");
+        const getRequest = store.get(logId);
+
+        getRequest.onsuccess = (event) => {
+            const entryRecord = event.target.result;
+            if (!entryRecord) {
+                alert("Log entry could not be located in database.");
+                return;
+            }
+
+            // 2. Open prompt asking for corrected time
+            const currentTimeStr = entryRecord.timestamp;
+            const newTimeInput = prompt(`Edit time for pick originally logged at ${currentTimeStr}.\nEnter corrected time (e.g., 02:30 PM or 14:15):`);
+            
+            // User Cancelled or time did not change
+            if (!newTimeInput || newTimeInput === currentTimeStr) return; 
+
+            // Sanitizing clock string format (e.g. military to AM/PM)
+            const sanitizedClockStr = this.parseInputToClockString(newTimeInput);
+            
+            // 3. Update the entry properties
+            entryRecord.timestamp = sanitizedClockStr;
+            
+            // CRITICAL PACE MATH CORRECTION: 
+            // We must adjust the underlying raw ISO timestamp sequence so running metrics (stat-pace) 
+            // and gaps are instantly recalculated correctly.
+            entryRecord.rawTimestamp = this.adjustRawISOWithNewClock(entryRecord.rawTimestamp, sanitizedClockStr);
+            
+            // 4. Save the corrected record back to IndexedDB
+            const writeTx = this.db.transaction(["logs"], "readwrite");
+            const writeStore = writeTx.objectStore("logs");
+            const updateRequest = writeStore.put(entryRecord);
+
+            updateRequest.onsuccess = () => {
+                alert("Real-time timestamp updated successfully! Recalculating shift pace...");
+                // Refresh the active UI (logs, current pace, needed picks)
+                this.loadEntriesFromStorage();
+            };
+        };
+    }
+
+    // HELPER: Sanitizes user strings to clean standard HH:MM AM/PM formats
+    parseInputToClockString(inputStr) {
+        inputStr = inputStr.trim();
+        // Regex check for HH:MM military time (e.g. "14:30")
+        if (/^\d{2}:\d{2}$/.test(inputStr)) {
+            let [hours, minutes] = inputStr.split(':');
+            hours = parseInt(hours);
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12 || 12; // Adjust 0 for midnight to 12
+            return `${String(hours).padStart(2, '0')}:${minutes} ${ampm}`;
+        }
+        // Returns sanitized AM/PM input (e.g. "2:30pm" -> "2:30PM")
+        return inputStr.toUpperCase(); 
+    }
+
+    // HELPER: Splices the new target hours/minutes back into the calendar ISO record
+    adjustRawISOWithNewClock(oldIsoStr, sanitizedClockStr) {
+        try {
+            const dateObj = new Date(oldIsoStr);
+            // RegEx pulls numbers and context (e.g. "02:30 PM")
+            const match = sanitizedClockStr.match(/(\d+):(\d+)\s*(AM|PM)?/i);
+            if (match) {
+                let hours = parseInt(match[1]);
+                const minutes = parseInt(match[2]);
+                const ampm = match[3];
+                // Adjust hours (e.g. PM -> military)
+                if (ampm) {
+                    if (ampm.toUpperCase() === 'PM' && hours < 12) hours += 12;
+                    if (ampm.toUpperCase() === 'AM' && hours === 12) hours = 0; // Midnight
+                }
+                dateObj.setHours(hours);
+                dateObj.setMinutes(minutes);
+            }
+            return dateObj.toISOString(); // Commit proper ISO sequence
+        } catch (e) {
+            // Fallback safe return if date parsing somehow fails
+            return oldIsoStr; 
+        }
+    }
             sealShiftSession() {
                 if (!this.db || !this.currentShiftSessionId) return;
                 if (!confirm("Complete and lock this shift? This saves it cleanly onto your Home dashboard history logs.")) return;
+                
+                // Prompt for final end-of-session summary notes
+                const endOfSessionNotes = prompt("📝 Add any optional End of Session Notes (e.g., manager names, equipment issues, section wrap-ups):");
                 
                 const transaction = this.db.transaction(["logs"], "readwrite");
                 const store = transaction.objectStore("logs");
@@ -574,6 +785,21 @@
                         store.put(entry);
                     }
                 });
+                
+                // If the user typed notes, inject them as a final system pin to seal with the session
+                if (endOfSessionNotes && endOfSessionNotes.trim() !== "") {
+                    const now = new Date();
+                    const finalRecord = {
+                        sessionId: this.currentShiftSessionId,
+                        count: 0,
+                        notes: `📝 End of Session Notes: ${endOfSessionNotes.trim()}`,
+                        timestamp: now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                        rawTimestamp: now.toISOString(),
+                        status: "sealed"
+                    };
+                    store.add(finalRecord);
+                }
+
                 transaction.oncomplete = () => {
                     alert("Shift packed up and recorded cleanly!");
                     this.currentShiftSessionId = null;
@@ -604,20 +830,26 @@
                     };
                 }
             }deleteShiftSession(sessionId) {
-        if (!this.db) return;
-        if (!confirm("Are you sure you want to delete this specific shift session entirely? This cannot be undone.")) return;
+                if (!this.db) return;
+                if (!confirm("Are you sure you want to delete this specific shift session entirely? This cannot be undone.")) return;
+                
+                // 🌟 FIX: If deleting the currently open active shift, clear out the session state variables first!
+                if (this.currentShiftSessionId === sessionId) {
+                    this.currentShiftSessionId = null;
+                    this.shiftStartTime = null;
+                }
 
-        const transaction = this.db.transaction(["logs"], "readwrite");
-        const store = transaction.objectStore("logs");
-        
-        const entryIdsToDelete = this.entries.filter(e => (e.sessionId || "legacy_archive") === sessionId).map(e => e.id);
-        entryIdsToDelete.forEach(id => store.delete(id));
-
-        transaction.oncomplete = () => {
-            alert("Shift session successfully deleted.");
-            this.loadEntriesFromStorage();
-        };
-    }
+                const transaction = this.db.transaction(["logs"], "readwrite");
+                const store = transaction.objectStore("logs");
+                
+                const entryIdsToDelete = this.entries.filter(e => (e.sessionId || "legacy_archive") === sessionId).map(e => e.id);
+                entryIdsToDelete.forEach(id => store.delete(id));
+                
+                transaction.oncomplete = () => {
+                    alert("Shift session successfully deleted.");
+                    this.loadEntriesFromStorage();
+                };
+            }
             
             getCompiledSessions() {
                 const sessionsMap = {};
@@ -896,6 +1128,7 @@
             }
 
             recalculateMetrics() {
+                if (!this.currentShiftSessionId) return;
                 const activeSessionRecords = this.entries.filter(e => e.sessionId === this.currentShiftSessionId);
                 let grandTotalPicks = 0;
                 activeSessionRecords.forEach(e => grandTotalPicks += e.count);
@@ -954,7 +1187,7 @@
                                     <div style="font-weight: bold;">${item.count === 0 ? "📍 Action Pin" : `${item.count} Items`}</div>
                                     <div style="color: var(--text-muted); font-size: 0.8rem;">${item.notes}</div>
                                 </div>
-                                <div style="color: var(--text-muted); font-size: 0.85rem;">${item.timestamp}</div>
+                                <div style="color: var(--text-muted); font-size: 0.85rem;">${item.timestamp} <button onclick="window.floorPace.openActiveLogTimeEdit(${item.id})" style="background: transparent; border: none; color: #888; cursor: pointer; padding: 0 4px; font-size: 0.8rem; vertical-align: middle;">✏️</button></div>
                             </div>
                         `;
                         runningTimelineContainer.appendChild(row);
@@ -1109,7 +1342,46 @@
                 closeManualEntry();
             }
         }
+        function instantDirectLog(countValue) {
+            if (!window.floorPace || !window.floorPace.db || !window.floorPace.currentShiftSessionId) {
+                alert("Please start a shift session before logging picks!");
+                return;
+            }
+
+            const transaction = window.floorPace.db.transaction(["logs"], "readwrite");
+            const store = transaction.objectStore("logs");
+            
+            const now = new Date();
+            const logRecord = {
+                sessionId: window.floorPace.currentShiftSessionId,
+                count: countValue,
+                notes: "⚡ Quick Logged",
+                timestamp: now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                rawTimestamp: now.toISOString(),
+                status: "active" // Sets it as active for your running shift counts
+            };
+
+            store.add(logRecord);
+
+            transaction.oncomplete = () => {
+                // Instantly recalculate rates, progress bars, and historical list logs
+                window.floorPace.loadEntriesFromStorage();
+            };
+        }
         function toggleActiveTransfer() { if (window.currentActiveList) { window.currentActiveList.transfer = !window.currentActiveList.transfer; updateActiveCardUI(); } }
+      function editActiveNotes() {
+            if (!window.currentActiveList) return;
+            
+            // Prompt the user for notes, showing their current notes as the default value
+            const existingNotes = window.currentActiveList.notes || "";
+            const newNotes = prompt("✏️ Edit notes for this staged pick:", existingNotes);
+            
+            // If they didn't click cancel, update the note
+            if (newNotes !== null) {
+                window.currentActiveList.notes = newNotes.trim();
+                updateActiveCardUI();
+            }
+        }
         function modifyActivePickAmount(amountModifier) {
             if (!window.currentActiveList) {
                 alert("No active pick session running!");
