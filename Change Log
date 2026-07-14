@@ -21,3 +21,9 @@ Staging notes can now be added manually before/after staging a pick
 Increased the selection of quick adjust numbers
 New Feature: Added Quick Pick buttons to instantly bypass staging
 Time Editor added, allowing retroactive adjustment of log timestamps
+
+V 0.4 
+Pacing Math: Fixed pacing calculation so your hourly rate perfectly freezes while on break
+New Feature: Added an End Shift Early Button
+Enhanced Time Tracking: Updated log timestamps to show the full duration instead of the start time
+Fixes: Shift log now always displays the starting zone, Notes now automatically clear out after every logged pick, corrected "Quick Logged" to "Quick Picked" across all logs
