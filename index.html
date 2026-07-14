@@ -212,6 +212,12 @@
             outline: none;
             cursor: pointer;
         }
+@media (max-width: 768px) {
+    .btn-medical-pause { 
+        bottom: 145px !important; 
+        right: 20px !important;  
+    }
+}
     </style>
     <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 </head>
@@ -418,17 +424,20 @@
 
             <button class="btn-giant" onclick="openManualEntry()">➕ STAGE NEW PICK MANUALLY</button>
             <button class="btn-giant" style="background-color: var(--accent-purple); margin-top: 16px;" onclick="window.floorPace.sealShiftSession()">🔒 COMPLETE & SEAL FULL SHIFT</button>
+<button onclick="window.floorPace.endShiftEarly()" style="background: #e0a800; color: #fff; padding: 10px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; margin-top: 10px; width: 100%;">
+    ⚠️ End Shift Early (Adjust Quota)
+</button>
        </div>
 
-        <!-- PASTE THIS EMERGENCY BUTTON RIGHT HERE -->
         <button class="btn-medical-pause" onclick="triggerMedicalPause()" title="Emergency Medical Pause">
             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                 <line x1="12" y1="5" x2="12" y2="19"></line>
                 <line x1="5" y1="12" x2="19" y2="12"></line>
+                
             </svg>
         </button>
         
-    </div> <!-- This is the end of the screen-tracker container -->
+    </div> 
         </div>
 
         <div id="tab-history" class="tab-content">
@@ -602,16 +611,21 @@
                     this.renderMetricsChart();
                 }
             }
-            startNewShiftSession() {
-                this.currentShiftSessionId = "shift_" + Date.now();
-                this.shiftStartTime = new Date();
-                this.totalBreakDeductionMs = 0;
-                this.isOnBreak = false;
-                
-                document.getElementById('shift-clock').innerText = `Shift started: ${this.shiftStartTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
-                this.addEntry(0, "🏁 New Active Work Session Initialized.");
-                this.navigateToScreen('tracker');
-            }
+    startNewShiftSession() {
+        this.currentShiftSessionId = "shift_" + Date.now();
+        this.shiftStartTime = new Date();
+        this.totalBreakDeductionMs = 0;
+        this.isOnBreak = false;
+
+        // Ensure the initial location is locked into the very first log
+        const initialZone = document.getElementById('global-zone-select').value || "Customer";
+        
+        document.getElementById('shift-clock').innerText = `Shift started: ${this.shiftStartTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+        
+        // This is the key change: setting the note explicitly including the starting location.
+        this.addEntry(0, `🏁 New Active Work Session Initialized [Location: ${initialZone}].`);
+        this.navigateToScreen('tracker');
+    }
             updateShiftTarget() {
                 const paceDropdown = document.getElementById('config-target-pace');
                 const hoursDropdown = document.getElementById('config-shift-hours');
@@ -653,30 +667,44 @@
                 });
                 this.addEntry(0, `🏁 Ended ${breakType}.`);
             }
-            addEntry(count, notes = "", startTimeStr = null) {
-                if (!this.db) return;
-                const now = new Date();
-                const logTime = startTimeStr ? startTimeStr : now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                const isTest = startTimeStr && window.currentActiveList && window.currentActiveList.testMode;
-                
-                const newRecord = {
-                    sessionId: this.currentShiftSessionId || "historical_ledger",
-                    count: parseInt(count),
-                    notes: notes || "Pick log entry",
-                    timestamp: logTime,
-                    rawTimestamp: now.toISOString(),
-                    status: isTest ? "test" : "active"
-                };
-                const transaction = this.db.transaction(["logs"], "readwrite");
-                const store = transaction.objectStore("logs");
-                const request = store.add(newRecord);
-                request.onsuccess = () => {
-                    this.entries.push({ ...newRecord, id: request.result });
-                    this.recalculateMetrics();
-                    this.renderHomeHubRegistry();
-                };
-            }
-            // ========================================================
+            // REPLACE your existing addEntry method:
+    addEntry(count, notes = "", startTimeStr = null) {
+        if (!this.db) return;
+        const now = new Date();
+        
+        // Use provided startTimeStr (for manual entry) or current locale time for Quick Picks/Picks
+        const logTime = startTimeStr ? startTimeStr : now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        
+        // Simulation/Test mode logic
+        const isTest = startTimeStr && window.currentActiveList && window.currentActiveList.testMode;
+        
+        // Fix #4: Capture the *absolute* start time of the activity in ISO format.
+        // If a startTimeStr was provided (from manual entry start), we don't have an accurate
+        // ISO start time, so we default to 'now'. Quick Picks, however, will be precise.
+        const startISO = startTimeStr ? null : now.toISOString();
+
+        const newRecord = {
+            sessionId: this.currentShiftSessionId || "historical_ledger",
+            count: parseInt(count),
+            notes: notes || "Pick log entry",
+            timestamp: logTime, // We will keep this as a 'Starting' marker fallback
+            rawTimestamp: now.toISOString(), // This keeps the entry sorted properly in the list
+            startTimeISO: startISO, // *** NEW: Captured start time for duration calculations
+            status: isTest ? "test" : "active"
+        };
+        const transaction = this.db.transaction(["logs"], "readwrite");
+        const store = transaction.objectStore("logs");
+        const request = store.add(newRecord);
+        request.onsuccess = () => {
+            this.entries.push({ ...newRecord, id: request.result });
+            this.recalculateMetrics();
+            this.renderHomeHubRegistry();
+            
+            // Fix #2: Ensure the main notes input field on the tracker screen clears after a Quick Pick is used.
+            const globalNotes = document.getElementById('manual-notes-input');
+            if(globalNotes) globalNotes.value = "";
+        };
+    }
     // ✏️ REAL-TIME ACTIVE LOG EDITING SYSTEM
     // ========================================================
 
@@ -712,9 +740,7 @@
             // 3. Update the entry properties
             entryRecord.timestamp = sanitizedClockStr;
             
-            // CRITICAL PACE MATH CORRECTION: 
-            // We must adjust the underlying raw ISO timestamp sequence so running metrics (stat-pace) 
-            // and gaps are instantly recalculated correctly.
+            // CRITICAL PACE MATH CORRECTION:
             entryRecord.rawTimestamp = this.adjustRawISOWithNewClock(entryRecord.rawTimestamp, sanitizedClockStr);
             
             // 4. Save the corrected record back to IndexedDB
@@ -1126,8 +1152,59 @@
                     });
                 }
             }
+endShiftEarly() {
+        if (!this.currentShiftSessionId) return;
 
-            recalculateMetrics() {
+        // 1. Ask how many hours early the shift is ending (e.g., 2 or 1.5)
+        const userInput = prompt("How many hours earlier are you ending this shift?\n(Enter half hours as decimals, e.g., 1, 1.5, 2, 2.5. Enter 0 if no change):");
+        
+        // If they hit cancel or leave it blank, stop execution
+        if (userInput === null || userInput.trim() === "") return;
+        
+        const hoursEarly = parseFloat(userInput);
+
+        // 2. Validate the input
+        if (isNaN(hoursEarly) || hoursEarly < 0) {
+            alert("Please enter a valid number of hours.");
+            return;
+        }
+
+        // 3. Determine planned shift hours (defaulting to 8 if not found)
+        const plannedHours = this.plannedShiftHours || 8; 
+
+        // 4. Calculate actual hours worked by subtracting hoursEarly from plannedHours
+        const actualHoursWorked = plannedHours - hoursEarly;
+
+        if (actualHoursWorked <= 0) {
+            alert(`Error: Ending ${hoursEarly} hours early on a ${plannedHours}-hour shift leaves 0 or negative work hours. Please re-enter.`);
+            return;
+        }
+
+        // 5. Calculate the new prorated quota
+        const originalQuota = this.shiftTotalGoal;
+        const proratedQuota = Math.round((originalQuota / plannedHours) * actualHoursWorked);
+
+        // 6. Confirm the adjustment with the user
+        const confirmMessage = `Confirm Shift Adjustment:\n\n` +
+                               `• Original Shift Length: ${plannedHours} hours\n` +
+                               `• Hours Leaving Early: ${hoursEarly} hours\n` +
+                               `• Adjusted Quota: ${proratedQuota}\n\n` +
+                               `Does this look right?`;
+
+        if (confirm(confirmMessage)) {
+            // Apply the new adjusted quota goal to this session
+            this.shiftTotalGoal = proratedQuota;
+            
+            // Log an action pin in the timeline noting the exact adjustment
+            this.addEntry(0, `⚠️ Shift ended ${hoursEarly}h early. Quota adjusted from ${originalQuota} to ${proratedQuota}.`);
+            
+            // Trigger your standard sealing routine with the new quota intact
+            setTimeout(() => {
+                this.sealShiftSession();
+            }, 500);
+        }
+    }
+recalculateMetrics() {
                 if (!this.currentShiftSessionId) return;
                 const activeSessionRecords = this.entries.filter(e => e.sessionId === this.currentShiftSessionId);
                 let grandTotalPicks = 0;
@@ -1135,6 +1212,7 @@
                 
                 const now = new Date();
                 let currentBreakAddition = 0;
+                
                 if (this.isOnBreak && this.breakStartTime) {
                     currentBreakAddition = now - this.breakStartTime;
                     const bMin = Math.floor(currentBreakAddition / (1000 * 60));
@@ -1143,30 +1221,39 @@
                     if (timerDisplay) timerDisplay.innerText = `${bMin}:${bSec}`;
                 }
                 
-                let diffMs = this.shiftStartTime ? (now - this.shiftStartTime - (this.totalBreakDeductionMs + currentBreakAddition)) : 0;
+                // Pure active time math: Total time minus ALL breaks (past and current)
+                let diffMs = 0;
+                if (this.shiftStartTime) {
+                    const totalElapsed = now - this.shiftStartTime;
+                    const totalBreaks = (this.totalBreakDeductionMs || 0) + currentBreakAddition;
+                    diffMs = totalElapsed - totalBreaks;
+                }
                 if (diffMs < 0) diffMs = 0;
                 
-                const totalHoursElapsed = diffMs / (1000 * 60 * 60) || 0.01;
-                const computedLivePace = grandTotalPicks / totalHoursElapsed;
+                // Convert to hours. If it's 0 (frozen on break), we prevent division by zero gracefully 
+                // without forcing artificial time to tick forward.
+                const totalHoursElapsed = diffMs / (1000 * 60 * 60);
+                const computedLivePace = totalHoursElapsed > 0 ? (grandTotalPicks / totalHoursElapsed) : 0;
+                
                 const minutesElapsed = Math.floor(diffMs / (1000 * 60)) % 60;
                 const hoursElapsed = Math.floor(diffMs / (1000 * 60 * 60));
                 
                 let unitsLeftToTarget = this.shiftTotalGoal - grandTotalPicks;
                 if (unitsLeftToTarget < 0) unitsLeftToTarget = 0;
                 
+                // Render Stats Card
                 document.getElementById('stat-pace').innerHTML = `${computedLivePace.toFixed(1)}<span style="font-size: 1rem; color: var(--text-muted);">/hr</span>`;
                 document.getElementById('stat-total').innerText = grandTotalPicks;
                 document.getElementById('stat-elapsed').innerText = `${hoursElapsed}h ${minutesElapsed}m`;
                 document.getElementById('stat-needed').innerText = unitsLeftToTarget;
                 document.getElementById('stat-progress-text').innerText = `${grandTotalPicks} / ${this.shiftTotalGoal} Picks`;
-// Calculate the percentage
+
+                // Progress Bar 
                 const progressPercent = Math.min((grandTotalPicks / this.shiftTotalGoal) * 100, 100);
-                
-                // Set the width of the bar
                 const progressBarFill = document.getElementById('stat-progress-fill');
                 progressBarFill.style.width = `${progressPercent}%`;
 
-                // Dynamic Color Logic
+                // Dynamic Progress Bar Colors
                 if (progressPercent < 50) {
                     progressBarFill.style.backgroundColor = '#ff4c4c'; // Red
                 } else if (progressPercent < 100) {
@@ -1174,6 +1261,8 @@
                 } else {
                     progressBarFill.style.backgroundColor = '#32cd32'; // Green
                 }
+
+                // Render Current Shift Log List Timeline
                 const runningTimelineContainer = document.getElementById('live-history-list');
                 if (runningTimelineContainer) {
                     runningTimelineContainer.innerHTML = "";
@@ -1355,7 +1444,7 @@
             const logRecord = {
                 sessionId: window.floorPace.currentShiftSessionId,
                 count: countValue,
-                notes: "⚡ Quick Logged",
+                notes: "⚡ Quick Picked",
                 timestamp: now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
                 rawTimestamp: now.toISOString(),
                 status: "active" // Sets it as active for your running shift counts
@@ -1410,16 +1499,46 @@
             document.getElementById('active-list-notes').innerText = `${text} Started at ${window.currentActiveList.startTime}`;
         }
         function abandonActiveList() { if(confirm("Discard?")) { window.currentActiveList = null; document.getElementById('active-list-card').style.display = 'none'; } }
-        function completeActiveList() {
-            if (window.currentActiveList) {
-                let notes = `[${window.currentActiveList.tagType}]`;
-                if (window.currentActiveList.transfer) notes += " 🔄 TRANSFER RUN";
-                if (window.currentActiveList.notes) notes += ` - ${window.currentActiveList.notes}`;
-                window.floorPace.addEntry(window.currentActiveList.count, notes.trim(), window.currentActiveList.startTime);
-                window.currentActiveList = null;
-                document.getElementById('active-list-card').style.display = 'none';
-            }
-        }
+      // REPLACE your standalone completeActiveList function (near the end of the file):
+function completeActiveList() {
+    if (window.currentActiveList && window.floorPace) {
+        const now = new Date();
+        
+        // Formatting the notes string as before.
+        let notesString = `[${window.currentActiveList.tagType}]`;
+        if (window.currentActiveList.transfer) notesString += " 🔄 TRANSFER RUN";
+        if (window.currentActiveList.notes) notesString += ` - ${window.currentActiveList.notes}`;
+        
+        // 🌟 Fix #4 (The Core Logic): Calculate the Duration
+        // Extract the original manual start time from the object.
+        const manualStartTimeStr = window.currentActiveList.startTime; 
+        
+        // Standardize the current time string (e.g., 02:30 PM)
+        const endTimeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+        // Build the full duration string (e.g., "02:27 PM - 02:30 PM")
+        const fullDurationTimeString = `${manualStartTimeStr} - ${endTimeStr}`;
+
+        // 🌟 Fix #2 (Clearing Notes): Important, we pass the current global notes input 
+        // to `addEntry`, which then clears it immediately after the database save.
+        
+        // Submit the final log entry using the NEW fullDurationTimeString as the main timestamp identifier.
+        // This will be stored as the definitive 'Time' for this pick log.
+        window.floorPace.addEntry(
+            window.currentActiveList.count, 
+            notesString.trim(), 
+            fullDurationTimeString // Passing duration string as the time value.
+        );
+        
+        // Clean up and reset.
+        window.currentActiveList = null;
+        document.getElementById('active-list-card').style.display = 'none';
+        
+        // Double-check the notes input is empty (handled by addEntry but useful as a safety).
+        const notesInput = document.getElementById('manual-notes-input');
+        if (notesInput) notesInput.value = "";
+    }
+}
         function logSectionChange(zone) { window.floorPace.addEntry(0, `📍 Section: ${zone}`); }
 
         document.addEventListener("DOMContentLoaded", () => {
