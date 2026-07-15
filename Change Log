@@ -27,3 +27,11 @@ Pacing Math: Fixed pacing calculation so your hourly rate perfectly freezes whil
 New Feature: Added an End Shift Early Button
 Enhanced Time Tracking: Updated log timestamps to show the full duration instead of the start time
 Fixes: Shift log now always displays the starting zone, Notes now automatically clear out after every logged pick, corrected "Quick Logged" to "Quick Picked" across all logs
+
+V 0.5 
+Relocated the mobile medical button.
+Session Modes: Added an "In Training" option and relocated "Test Mode" within settings.
+Added a dedicated "Klearview" selection to the location options.
+Added a new 40-per-hour productivity rate preset.
+Added a pause button for LM briefings, huddles, and meetings.
+New Feature: Added Quick Notes: quick-tap presets for commonly occurring notes. 
