@@ -5,17 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>FloorPace Pro</title>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="40" height="40" style="vertical-align: middle;">
-    <circle cx="50" cy="50" r="46" fill="none" stroke="#212529" stroke-width="4"/>
-    <circle cx="50" cy="50" r="42" fill="#f8f9fa"/>
-    <path d="M 48 60 L 72 60" fill="none" stroke="#adb5bd" stroke-width="5" stroke-linecap="round"/>
-    <path d="M 48 60 L 48 22 L 68 22 A 11 11 0 0 1 68 44 L 48 44" fill="none" stroke="#495057" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M 40 14 L 40 60 M 18 60 L 40 60 M 22 48 L 40 48" fill="none" stroke="#212529" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
-    <circle cx="40" cy="68" r="8" fill="#212529" /><circle cx="40" cy="68" r="2.5" fill="#ced4da" />
-    <circle cx="64" cy="68" r="8" fill="#212529" /><circle cx="64" cy="68" r="2.5" fill="#ced4da" />
-</svg>
+        <circle cx="50" cy="50" r="46" fill="none" stroke="#212529" stroke-width="4"/>
+        <circle cx="50" cy="50" r="42" fill="#f8f9fa"/>
+        <path d="M 48 60 L 72 60" fill="none" stroke="#adb5bd" stroke-width="5" stroke-linecap="round"/>
+        <path d="M 48 60 L 48 22 L 68 22 A 11 11 0 0 1 68 44 L 48 44" fill="none" stroke="#495057" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M 40 14 L 40 60 M 18 60 L 40 60 M 22 48 L 40 48" fill="none" stroke="#212529" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="40" cy="68" r="8" fill="#212529" /><circle cx="40" cy="68" r="2.5" fill="#ced4da" />
+        <circle cx="64" cy="68" r="8" fill="#212529" /><circle cx="64" cy="68" r="2.5" fill="#ced4da" />
+    </svg>
     <style>
-        
-        
         :root {
             --bg-dark: #000000;
             --bg-card: #121212;
@@ -33,15 +31,12 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             -webkit-tap-highlight-color: transparent;
         }
-
-
         body {
             background-color: var(--bg-dark);
             color: var(--text-main);
             padding: 16px;
             padding-bottom: 40px;
         }
-        
         header {
             margin-bottom: 20px;
             display: flex;
@@ -93,20 +88,17 @@
             padding: 16px;
             margin-bottom: 20px;
         }
-
         .progress-bar-bg {
             background-color: #222;
-            height: 25px; /* <-- CHANGED: This makes the bar much thicker */
-            border-radius: 12px; /* <-- CHANGED: Smooths the corners for the thicker bar */
+            height: 25px;
+            border-radius: 12px;
             overflow: hidden;
             margin-top: 8px;
         }
-
         .progress-bar-fill {
-            background-color: #ff4c4c; /* <-- CHANGED: Makes the bar start out Red */
+            background-color: #ff4c4c;
             height: 100%;
             width: 0%;
-            /* <-- CHANGED: Makes the bar glide smoothly and fade colors slowly */
             transition: width 0.5s ease-in-out, background-color 0.5s ease-in-out;
         }
         .nav-tabs {
@@ -212,17 +204,17 @@
             outline: none;
             cursor: pointer;
         }
-@media (max-width: 768px) {
-    .btn-medical-pause { 
-        bottom: 145px !important; 
-        right: 20px !important;  
-    }
-}
+        @media (max-width: 768px) {
+            .btn-medical-pause { 
+                bottom: 145px !important; 
+                right: 20px !important;  
+            }
+        }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+    
 </head>
 <body>
-
     <!-- SCREEN 1: HOMEPAGE HUB -->
     <div id="screen-home" class="app-screen active">
         <header>
@@ -232,7 +224,6 @@
             </div>
             <button class="btn-secondary" style="background-color: var(--accent-green);" onclick="window.floorPace.startNewShiftSession()">🚀 START SHIFT</button>
         </header>
-
         <!-- Lifetime Stats -->
         <div class="metric-grid">
             <div class="metric-card" style="background: linear-gradient(145deg, #0d1b2a, #121212);">
@@ -244,13 +235,11 @@
                 <span class="metric-value" id="home-stat-shift-count">0</span>
             </div>
         </div>
-
         <!-- Averaging Calculations Display Banner -->
         <div class="metric-card" style="background: linear-gradient(145deg, #14251c, #121212); margin-bottom: 16px; border: 1px solid #1e3d29;">
             <span class="metric-label" style="color: #52b788;">Average Picks Per Shift</span>
             <span class="metric-value" id="home-stat-avg-picks" style="color: #74c69d;">0.0 <span style="font-size:0.9rem; font-weight:normal; color:#888;">items / session</span></span>
         </div>
-
         <!-- Interactive Visualizer Engine Card -->
         <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 16px; margin-bottom: 20px;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
@@ -265,7 +254,6 @@
                 <canvas id="home-performance-canvas" style="width: 100%; height: 100%; display: block;"></canvas>
             </div>
         </div>
-
         <!-- Backups Management -->
         <div style="background: #151515; padding: 16px; border-radius: 16px; border: 1px solid #252525; margin-bottom: 20px;">
             <h4 style="font-size: 0.9rem; margin-bottom: 10px; color: #aaa;">📊 Database Management & Backups</h4>
@@ -274,7 +262,6 @@
                 <button class="btn-secondary" style="background-color: #2E7D32; padding: 12px;" onclick="window.floorPace.importData()">📥 Import Excel CSV</button>
             </div>
         </div>
-
         <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;">
             <span>📋 Historical Shift Registry <span style="font-size:0.8rem; font-weight:normal; color:#888;">(Click to expand)</span></span>
             <button class="btn-secondary" style="background-color: #441111; font-size: 0.75rem; padding: 4px 8px;" onclick="if(confirm('Wipe ALL database history? Clear duplicates first?')) window.floorPace.clearLiveShift(true)">Clear All</button>
@@ -293,9 +280,8 @@
                 <p style="color: var(--text-muted); font-size: 0.85rem;" id="shift-clock">Shift started: --:--</p>
             </div>
         </header>
-
         <div id="break-status-banner" style="display: none; background: linear-gradient(95deg, #EF6C00, #E65100); color: white; border-radius: 12px; padding: 16px; margin-bottom: 16px; font-weight: bold; justify-content: space-between; align-items: center; z-index: 9999;"></div>
-
+        
         <!-- Configurations Panel -->
         <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 16px; margin-bottom: 20px; display: flex; flex-wrap: wrap; gap: 12px; align-items: center;">
             <div style="flex: 1; min-width: 130px;">
@@ -305,6 +291,7 @@
                     <option value="16">16 Picks / Hour</option>
                     <option value="18">18 Picks / Hour</option>
                     <option value="20">20 Picks / Hour</option>
+                    <option value="40">40 Picks / Hour</option>
                 </select>
             </div>
             <div style="flex: 1; min-width: 130px;">
@@ -331,7 +318,17 @@
                     <option value="Shower Doors">📍 Shower Doors</option>
                     <option value="Building 61">📍 Building 61</option>
                     <option value="Aisle 6/7">📍 Aisle 6/7</option>
+                    <option value="Klearview">📍 Klearview</option>
                     <option value="physical-tag">🏷️ Physical Tag</option>
+
+                </select>
+            </div>
+            <div style="flex: 1; min-width: 160px;">
+                <label style="color: var(--text-muted); font-size: 0.75rem; display: block; margin-bottom: 4px; font-weight: bold;">SESSION MODE</label>
+                <select id="global-session-mode" style="width: 100%; height: 36px; background-color: #000; border: 1px solid #444; border-radius: 8px; color: #fff; padding: 0 6px;">
+                    <option value="standard" selected>🟢 Standard Mode</option>
+                    <option value="training">🔰 Training Mode</option>
+                    <option value="test">🧪 Test Mode</option>
                 </select>
             </div>
         </div>
@@ -348,15 +345,26 @@
             <div style="display: flex; align-items: baseline; gap: 6px;">
                 <span id="active-list-count" style="font-size: 3rem; font-weight: 900; line-height: 1;">0</span>
                 <span style="color: #B3E5FC; font-size: 1.1rem; font-weight: 600;">Picks Scheduled</span>
-            <button onclick="modifyActivePickAmount(-5)">-5</button>
+                <button onclick="modifyActivePickAmount(-5)">-5</button>
                 <button onclick="modifyActivePickAmount(-3)">-3</button>
                 <button onclick="modifyActivePickAmount(-1)">-1</button>
-<button onclick="modifyActivePickAmount(1)">+1</button>
-<button onclick="modifyActivePickAmount(3)">+3</button>
-<button onclick="modifyActivePickAmount(5)">+5</button>
+                <button onclick="modifyActivePickAmount(1)">+1</button>
+                <button onclick="modifyActivePickAmount(3)">+3</button>
+                <button onclick="modifyActivePickAmount(5)">+5</button>
             </div>
-           <button onclick="editActiveNotes()" style="height: 44px; background: rgba(255,255,255,0.1); border: 1px solid #444; border-radius: 12px; color: #FFF; font-weight: bold; cursor: pointer; margin-bottom: 4px;">📝 Add / Edit Active Notes</button>
-           
+            <button onclick="editActiveNotes()" style="height: 44px; background: rgba(255,255,255,0.1); border: 1px solid #444; border-radius: 12px; color: #FFF; font-weight: bold; cursor: pointer; margin-bottom: 4px;">📝 Add / Edit Active Notes</button>
+            <!-- Quick Notes Tag Grid (Inside the Blue Card) -->
+<div style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 4px;">
+<!-- Quick Tap Notes Button Grid -->
+            <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px;">
+                <button type="button" onclick="appendQuickNote('Klearview Pallet', this)" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; border-radius: 20px; padding: 6px 12px; font-size: 11px; cursor: pointer; font-weight: 600; transition: background 0.1s ease;">+ Klearview Pallet</button>
+                <button type="button" onclick="appendQuickNote('Double Pallet', this)" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; border-radius: 20px; padding: 6px 12px; font-size: 11px; cursor: pointer; font-weight: 600; transition: background 0.1s ease;">+ Double Pallet</button>
+                <button type="button" onclick="appendQuickNote('Clamp Used', this)" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; border-radius: 20px; padding: 6px 12px; font-size: 11px; cursor: pointer; font-weight: 600; transition: background 0.1s ease;">+ Clamp Used</button>
+                 <button type="button" onclick="appendQuickNote('2nd Level Grab', this)" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; border-radius: 20px; padding: 6px 12px; font-size: 11px; cursor: pointer; font-weight: 600; transition: background 0.1s ease;">+ 2nd Level Grab</button>
+                  <button type="button" onclick="appendQuickNote('3rd Level Grab', this)" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; border-radius: 20px; padding: 6px 12px; font-size: 11px; cursor: pointer; font-weight: 600; transition: background 0.1s ease;">+ 3rd Level Grab</button>
+                   <button type="button" onclick="appendQuickNote('4th Level Grab', this)" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; border-radius: 20px; padding: 6px 12px; font-size: 11px; cursor: pointer; font-weight: 600; transition: background 0.1s ease;">+ 4th Level Grab</button>
+            </div>
+</div>
             <button id="active-transfer-toggle" onclick="toggleActiveTransfer()" style="height: 44px; background: rgba(21,101,192,0.4); border: 1px dashed #29B6F6; border-radius: 12px; color: #FFF; font-weight: bold; cursor: pointer;">🔄 Toggle Transfer Note</button>
             <button onclick="completeActiveList()" style="background-color: #FFF; color: #0D47A1; border: none; border-radius: 12px; height: 50px; font-size: 1rem; font-weight: 700; cursor: pointer;">('🗹 SEAL & ARCHIVE ACTIVE PICK')</button>
         </div>
@@ -380,7 +388,6 @@
                 <span class="metric-value" id="stat-needed">0</span>
             </div>
         </div>
-
         <div class="progress-container">
             <div style="display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 600;">
                 <span style="color: var(--text-muted);">Shift Quota Progress</span>
@@ -390,22 +397,23 @@
                 <div class="progress-bar-fill" id="stat-progress-fill"></div>
             </div>
         </div>
-
         <div id="live-delay-warning" style="display: none; padding: 14px; border-radius: 12px; margin-bottom: 16px; font-weight: bold; text-align: center;"></div>
-
+        
         <!-- Delays -->
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px;">
+<!-- Delays -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; margin-bottom: 16px;">
             <button id="btn-break-10" class="break-btn" style="background-color: #E65100; padding: 10px; color: white; border-radius: 12px; border: none;" onclick="window.floorPace.startBreak('10-Min Break')">☕ 10-MIN BREAK</button>
             <button id="btn-break-lunch" class="break-btn" style="background-color: #BF360C; padding: 10px; color: white; border-radius: 12px; border: none;" onclick="window.floorPace.startBreak('Lunch')">🍱 LUNCH</button>
             <button id="btn-break-bathroom" class="break-btn" style="background-color: #7B1FA2; padding: 10px; color: white; border-radius: 12px; border: none;" onclick="window.floorPace.startBreak('Bathroom Break')">🧻 BATHROOM</button>
             <button id="btn-break-cleanup" class="break-btn" style="background-color: #455A64; padding: 10px; color: white; border-radius: 12px; border: none;" onclick="window.floorPace.startBreak('Cleanup')">🧹 CLEANUP</button>
-        </div>
-
+            <button id="btn-break-lm" class="break-btn" style="background-color: #00796B; padding: 10px; color: white; border-radius: 12px; border: none;" onclick="window.floorPace.startBreak('LM / Briefing')">💬 LM / BRIEFING</button>
+      </div>
+        
         <nav class="nav-tabs">
             <button class="tab-btn active" onclick="switchTab('dashboard')">Tracking Actions</button>
             <button class="tab-btn" onclick="switchTab('history')">Current Shift Logs</button>
         </nav>
-
+        
         <div id="tab-dashboard" class="tab-content active">
             <div style="background-color: var(--bg-card); border: 2px dashed #333; border-radius: 16px; padding: 20px; margin-bottom: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 120px; text-align: center; position: relative;">
                 <span style="font-size: 1.75rem; margin-bottom: 4px;">📷</span>
@@ -413,32 +421,26 @@
                 <input type="file" accept="image/*" capture="environment" id="camera-file-input" onchange="handleCameraScan(this)" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer;">
             </div>
             <!-- INSTANT QUICK Pick BUTTONS -->
-        <div style="margin-bottom: 16px;">
-            <div style="font-size: 0.8rem; font-weight: bold; color: #888; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">⚡ Quick Pick (Bypass Staging)</div>
-            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px;">
-                <button onclick="instantDirectLog(1)" style="height: 40px; background: #26a69a; color: #FFF; border: none; border-radius: 10px; font-weight: bold; cursor: pointer;">+1 Pick</button>
-                <button onclick="instantDirectLog(2)" style="height: 40px; background: #00897b; color: #FFF; border: none; border-radius: 10px; font-weight: bold; cursor: pointer;">+2 Picks</button>
-                <button onclick="instantDirectLog(3)" style="height: 40px; background: #00695c; color: #FFF; border: none; border-radius: 10px; font-weight: bold; cursor: pointer;">+3 Picks</button>
+            <div style="margin-bottom: 16px;">
+                <div style="font-size: 0.8rem; font-weight: bold; color: #888; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">⚡ Quick Pick (Bypass Staging)</div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px;">
+                    <button onclick="instantDirectLog(1)" style="height: 40px; background: #26a69a; color: #FFF; border: none; border-radius: 10px; font-weight: bold; cursor: pointer;">+1 Pick</button>
+                    <button onclick="instantDirectLog(2)" style="height: 40px; background: #00897b; color: #FFF; border: none; border-radius: 10px; font-weight: bold; cursor: pointer;">+2 Picks</button>
+                    <button onclick="instantDirectLog(3)" style="height: 40px; background: #00695c; color: #FFF; border: none; border-radius: 10px; font-weight: bold; cursor: pointer;">+3 Picks</button>
+                </div>
             </div>
-        </div>
-
             <button class="btn-giant" onclick="openManualEntry()">➕ STAGE NEW PICK MANUALLY</button>
             <button class="btn-giant" style="background-color: var(--accent-purple); margin-top: 16px;" onclick="window.floorPace.sealShiftSession()">🔒 COMPLETE & SEAL FULL SHIFT</button>
-<button onclick="window.floorPace.endShiftEarly()" style="background: #e0a800; color: #fff; padding: 10px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; margin-top: 10px; width: 100%;">
-    ⚠️ End Shift Early (Adjust Quota)
-</button>
-       </div>
-
+            <button onclick="window.floorPace.endShiftEarly()" style="background: #e0a800; color: #fff; padding: 10px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer; margin-top: 10px; width: 100%;">
+                ⚠️ End Shift Early (Adjust Quota)
+            </button>
+        </div>
         <button class="btn-medical-pause" onclick="triggerMedicalPause()" title="Emergency Medical Pause">
             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                 <line x1="12" y1="5" x2="12" y2="19"></line>
                 <line x1="5" y1="12" x2="19" y2="12"></line>
-                
             </svg>
         </button>
-        
-    </div> 
-        </div>
 
         <div id="tab-history" class="tab-content">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
@@ -447,48 +449,37 @@
             </div>
             <div id="live-history-list"></div>
         </div>
-        <!-- Inside your Live Tracking container -->
-<div id="live-tracking-screen">
-    
-    <!-- All your current live tracking metrics, timers, charts go here -->
 
-
-    <style>
-  /* Ensure the tracking screen acts as the boundary wall for the button */
-  #live-tracking-screen {
-      position: relative;
-  }
-
-  /* Discrete Medical Plus Button */
-  .btn-medical-pause {
-      position: absolute;
-      bottom: 12px;    
-    right: 12px;     
-      width: 26px;
-      height: 26px;
-
-      background: transparent; 
-      color: #4a4a4a; 
-      border: 1px solid #333333; 
-      border-radius: 6px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.2s ease-in-out;
-      z-index: 99999
-  }
-
-  /* Becomes visible and flashes medical warning red ONLY when hovered */
-  .btn-medical-pause:hover {
-      color: #ffffff;
-      background: #dc2626; 
-      border-color: #dc2626;
-      box-shadow: 0 0 10px rgba(220, 38, 38, 0.5);
-  }
-  
-</style>
-</div>
+        <div id="live-tracking-screen">
+            <style>
+                #live-tracking-screen {
+                    position: relative;
+                }
+                .btn-medical-pause {
+                    position: absolute;
+                    bottom: 12px;    
+                    right: 12px;     
+                    width: 26px;
+                    height: 26px;
+                    background: transparent; 
+                    color: #4a4a4a; 
+                    border: 1px solid #333333; 
+                    border-radius: 6px;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    transition: all 0.2s ease-in-out;
+                    z-index: 99999
+                }
+                .btn-medical-pause:hover {
+                    color: #ffffff;
+                    background: #dc2626; 
+                    border-color: #dc2626;
+                    box-shadow: 0 0 10px rgba(220, 38, 38, 0.5);
+                }
+            </style>
+        </div>
     </div>
 
     <!-- MODAL -->
@@ -496,12 +487,6 @@
         <div style="background-color: var(--bg-card); width: 90%; max-width: 450px; border-radius: 24px; padding: 24px; border: 1px solid #333;">
             <h3 style="text-align: center; margin-bottom: 16px;">Log Manual Pick</h3>
             <input type="number" id="manual-count-input" pattern="\d*" style="width: 100%; height: 64px; background-color: #000; border: 2px solid #444; border-radius: 12px; color: #fff; font-size: 1.8rem; text-align: center; margin-bottom: 12px;" placeholder="0">
-            <div style="margin-bottom: 16px;">
-                <label style="background: #2A1A00; border: 1px solid #FF9800; padding: 12px; border-radius: 12px; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.85rem; color: #FFB74D;">
-                    <input type="checkbox" id="manual-test-check" style="width: 18px; height: 18px; accent-color: #FF9800;">
-                    <span>🧪 Simulation/Test Mode</span>
-                </label>
-            </div>
             <input type="text" id="manual-notes-input" style="width: 100%; height: 44px; background-color: #000; border: 1px solid #444; border-radius: 12px; color: #fff; padding: 0 12px; margin-bottom: 24px;" placeholder="Optional details...">
             <div style="display: flex; gap: 12px;">
                 <button class="btn-secondary" onclick="closeManualEntry()" style="flex: 1; background-color: #333;">Cancel</button>
@@ -511,7 +496,57 @@
     </div>
 
     <script>
-        // PASTE THIS FUNCTION DIRECTLY HERE AT THE TOP
+        // === SMART QUICK NOTES ENGINE ===
+        function appendQuickNote(noteText, btn) {
+            // 1. Temporary Highlight Effect
+            if (btn) {
+                const originalBg = btn.style.background;
+                const originalBorder = btn.style.border;
+                
+                // Highlight styles (vibrant blue feedback)
+                btn.style.background = "#3b82f6"; 
+                btn.style.border = "1px solid #60a5fa";
+                
+                // Revert back after 250 milliseconds
+                setTimeout(() => {
+                    btn.style.background = originalBg;
+                    btn.style.border = originalBorder;
+                }, 250);
+            }
+
+            // 2. Existing Note Logic
+            let noteInput = document.getElementById('active-note-input');
+            
+            if (!noteInput) {
+                noteInput = Array.from(document.querySelectorAll('input')).find(input => 
+                    (input.id && input.id.toLowerCase().includes('note')) || 
+                    (input.placeholder && input.placeholder.toLowerCase().includes('note'))
+                );
+            }
+            
+            if (!noteInput) {
+                console.error("Could not find the note input field!");
+                return;
+            }
+
+            let currentVal = noteInput.value.trim();
+
+            if (currentVal === "") {
+                noteInput.value = noteText;
+            } else if (currentVal.includes(noteText)) {
+                let regex = new RegExp(currentVal.startsWith(noteText) ? `${noteText}(,\\s*)?` : `,?\\s*${noteText}`, "g");
+                let newVal = currentVal.replace(regex, "").trim();
+                if (newVal.endsWith(',')) newVal = newVal.slice(0, -1);
+                noteInput.value = newVal;
+            } else {
+                noteInput.value = currentVal + ", " + noteText;
+            }
+
+            if (window.currentActiveList) {
+                window.currentActiveList.notes = noteInput.value.trim();
+            }
+        }
+
         function triggerMedicalPause() {
             if (window.liveMetricsIntervalLoopId) {
                 clearInterval(window.liveMetricsIntervalLoopId);
@@ -549,7 +584,6 @@
             }
         }
 
-        // Your original "class FloorPaceEngine {" code continues right here...
         class FloorPaceEngine {
             constructor() {
                 this.dbName = "FloorPaceDataStore";
@@ -611,21 +645,18 @@
                     this.renderMetricsChart();
                 }
             }
-    startNewShiftSession() {
-        this.currentShiftSessionId = "shift_" + Date.now();
-        this.shiftStartTime = new Date();
-        this.totalBreakDeductionMs = 0;
-        this.isOnBreak = false;
-
-        // Ensure the initial location is locked into the very first log
-        const initialZone = document.getElementById('global-zone-select').value || "Customer";
-        
-        document.getElementById('shift-clock').innerText = `Shift started: ${this.shiftStartTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
-        
-        // This is the key change: setting the note explicitly including the starting location.
-        this.addEntry(0, `🏁 New Active Work Session Initialized [Location: ${initialZone}].`);
-        this.navigateToScreen('tracker');
-    }
+            startNewShiftSession() {
+                this.currentShiftSessionId = "shift_" + Date.now();
+                this.shiftStartTime = new Date();
+                this.totalBreakDeductionMs = 0;
+                this.isOnBreak = false;
+                const initialZone = document.getElementById('global-zone-select').value || "Customer";
+                
+                document.getElementById('shift-clock').innerText = `Shift started: ${this.shiftStartTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+                
+                this.addEntry(0, `🏁 New Active Work Session Initialized [Location: ${initialZone}].`);
+                this.navigateToScreen('tracker');
+            }
             updateShiftTarget() {
                 const paceDropdown = document.getElementById('config-target-pace');
                 const hoursDropdown = document.getElementById('config-shift-hours');
@@ -634,14 +665,13 @@
                     this.totalShiftTargetHours = parseInt(hoursDropdown.value) || 8;
                     this.shiftTotalGoal = this.targetPacePerHour * this.totalShiftTargetHours;
                     this.recalculateMetrics();
-                    
                 }
             }
             startBreak(breakType) {
                 if (this.isOnBreak) return;
                 this.isOnBreak = true;
                 this.breakStartTime = new Date();
-                ['btn-break-10', 'btn-break-lunch', 'btn-break-bathroom', 'btn-break-cleanup'].forEach(id => {
+                ['btn-break-10', 'btn-break-lunch', 'btn-break-bathroom', 'btn-break-cleanup', 'btn-break-lm'].forEach(id => {
                     const btn = document.getElementById(id);
                     if (btn) { btn.disabled = true; btn.style.opacity = "0.4"; }
                 });
@@ -661,145 +691,176 @@
                 this.breakStartTime = null;
                 const banner = document.getElementById('break-status-banner');
                 if (banner) banner.style.display = 'none';
-                [['btn-break-10', '☕ 10-MIN BREAK'], ['btn-break-lunch', '🍱 LUNCH'], ['btn-break-bathroom', '🧻 BATHROOM'], ['btn-break-cleanup', '🧹 CLEANUP']].forEach(cfg => {
+               [
+                    ['btn-break-10', '☕ 10-MIN BREAK'], 
+                    ['btn-break-lunch', '🍱 LUNCH'], 
+                    ['btn-break-bathroom', '🧻 BATHROOM'], 
+                    ['btn-break-cleanup', '🧹 CLEANUP'], 
+                    ['btn-break-lm', '💬 LM / BRIEFING']
+                ].forEach(cfg => {
                     const btn = document.getElementById(cfg[0]);
-                    if (btn) { btn.disabled = false; btn.style.opacity = "1"; btn.innerText = cfg[1]; }
+                    if (btn) { 
+                        btn.disabled = false; 
+                        btn.style.opacity = "1"; 
+                        btn.innerText = cfg[1]; 
+                    }
                 });
                 this.addEntry(0, `🏁 Ended ${breakType}.`);
             }
-            // REPLACE your existing addEntry method:
-    addEntry(count, notes = "", startTimeStr = null) {
-        if (!this.db) return;
-        const now = new Date();
-        
-        // Use provided startTimeStr (for manual entry) or current locale time for Quick Picks/Picks
-        const logTime = startTimeStr ? startTimeStr : now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-        
-        // Simulation/Test mode logic
-        const isTest = startTimeStr && window.currentActiveList && window.currentActiveList.testMode;
-        
-        // Fix #4: Capture the *absolute* start time of the activity in ISO format.
-        // If a startTimeStr was provided (from manual entry start), we don't have an accurate
-        // ISO start time, so we default to 'now'. Quick Picks, however, will be precise.
-        const startISO = startTimeStr ? null : now.toISOString();
-
-        const newRecord = {
-            sessionId: this.currentShiftSessionId || "historical_ledger",
-            count: parseInt(count),
-            notes: notes || "Pick log entry",
-            timestamp: logTime, // We will keep this as a 'Starting' marker fallback
-            rawTimestamp: now.toISOString(), // This keeps the entry sorted properly in the list
-            startTimeISO: startISO, // *** NEW: Captured start time for duration calculations
-            status: isTest ? "test" : "active"
-        };
-        const transaction = this.db.transaction(["logs"], "readwrite");
-        const store = transaction.objectStore("logs");
-        const request = store.add(newRecord);
-        request.onsuccess = () => {
-            this.entries.push({ ...newRecord, id: request.result });
-            this.recalculateMetrics();
-            this.renderHomeHubRegistry();
-            
-            // Fix #2: Ensure the main notes input field on the tracker screen clears after a Quick Pick is used.
-            const globalNotes = document.getElementById('manual-notes-input');
-            if(globalNotes) globalNotes.value = "";
-        };
-    }
-    // ✏️ REAL-TIME ACTIVE LOG EDITING SYSTEM
-    // ========================================================
-
-    /**
-     * Triggers the user-facing modal to edit an entry's timestamp in the active shift log.
-     * @param {number} logId - The Numerical IndexedDB auto-increment ID of the log entry.
-     */
-    openActiveLogTimeEdit(logId) {
-        if (!this.db || !logId) return;
-
-        // 1. Fetch the specific record from IndexedDB safely first
-        const transaction = this.db.transaction(["logs"], "readonly");
-        const store = transaction.objectStore("logs");
-        const getRequest = store.get(logId);
-
-        getRequest.onsuccess = (event) => {
-            const entryRecord = event.target.result;
-            if (!entryRecord) {
-                alert("Log entry could not be located in database.");
-                return;
-            }
-
-            // 2. Open prompt asking for corrected time
-            const currentTimeStr = entryRecord.timestamp;
-            const newTimeInput = prompt(`Edit time for pick originally logged at ${currentTimeStr}.\nEnter corrected time (e.g., 02:30 PM or 14:15):`);
-            
-            // User Cancelled or time did not change
-            if (!newTimeInput || newTimeInput === currentTimeStr) return; 
-
-            // Sanitizing clock string format (e.g. military to AM/PM)
-            const sanitizedClockStr = this.parseInputToClockString(newTimeInput);
-            
-            // 3. Update the entry properties
-            entryRecord.timestamp = sanitizedClockStr;
-            
-            // CRITICAL PACE MATH CORRECTION:
-            entryRecord.rawTimestamp = this.adjustRawISOWithNewClock(entryRecord.rawTimestamp, sanitizedClockStr);
-            
-            // 4. Save the corrected record back to IndexedDB
-            const writeTx = this.db.transaction(["logs"], "readwrite");
-            const writeStore = writeTx.objectStore("logs");
-            const updateRequest = writeStore.put(entryRecord);
-
-            updateRequest.onsuccess = () => {
-                alert("Real-time timestamp updated successfully! Recalculating shift pace...");
-                // Refresh the active UI (logs, current pace, needed picks)
-                this.loadEntriesFromStorage();
-            };
-        };
-    }
-
-    // HELPER: Sanitizes user strings to clean standard HH:MM AM/PM formats
-    parseInputToClockString(inputStr) {
-        inputStr = inputStr.trim();
-        // Regex check for HH:MM military time (e.g. "14:30")
-        if (/^\d{2}:\d{2}$/.test(inputStr)) {
-            let [hours, minutes] = inputStr.split(':');
-            hours = parseInt(hours);
-            const ampm = hours >= 12 ? 'PM' : 'AM';
-            hours = hours % 12 || 12; // Adjust 0 for midnight to 12
-            return `${String(hours).padStart(2, '0')}:${minutes} ${ampm}`;
-        }
-        // Returns sanitized AM/PM input (e.g. "2:30pm" -> "2:30PM")
-        return inputStr.toUpperCase(); 
-    }
-
-    // HELPER: Splices the new target hours/minutes back into the calendar ISO record
-    adjustRawISOWithNewClock(oldIsoStr, sanitizedClockStr) {
-        try {
-            const dateObj = new Date(oldIsoStr);
-            // RegEx pulls numbers and context (e.g. "02:30 PM")
-            const match = sanitizedClockStr.match(/(\d+):(\d+)\s*(AM|PM)?/i);
-            if (match) {
-                let hours = parseInt(match[1]);
-                const minutes = parseInt(match[2]);
-                const ampm = match[3];
-                // Adjust hours (e.g. PM -> military)
-                if (ampm) {
-                    if (ampm.toUpperCase() === 'PM' && hours < 12) hours += 12;
-                    if (ampm.toUpperCase() === 'AM' && hours === 12) hours = 0; // Midnight
+            addEntry(count, notes = "", startTimeStr = null) {
+                if (!this.db) return;
+                const now = new Date();
+                const logTime = startTimeStr ? startTimeStr : now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                
+                let entryStatus = "active";
+                let finalizedNotes = notes || "Pick log entry";
+                
+                const currentMode = (window.currentActiveList && window.currentActiveList.sessionMode) 
+                                    || document.getElementById('global-session-mode').value 
+                                    || "standard";
+                
+                if (currentMode === "test") {
+                    entryStatus = "test"; 
+                } else if (currentMode === "training") {
+                    entryStatus = "active"; 
+                    if (!finalizedNotes.includes("🔰 [TRAINING]")) {
+                        finalizedNotes = `🔰 [TRAINING] ${finalizedNotes}`;
+                    }
                 }
-                dateObj.setHours(hours);
-                dateObj.setMinutes(minutes);
+                
+                const startISO = startTimeStr ? null : now.toISOString();
+                const newRecord = {
+                    sessionId: this.currentShiftSessionId || "historical_ledger",
+                    count: parseInt(count),
+                    notes: finalizedNotes,
+                    timestamp: logTime, 
+                    rawTimestamp: now.toISOString(), 
+                    startTimeISO: startISO, 
+                    status: entryStatus
+                };
+                const transaction = this.db.transaction(["logs"], "readwrite");
+                const store = transaction.objectStore("logs");
+                const request = store.add(newRecord);
+                request.onsuccess = () => {
+                    this.entries.push({ ...newRecord, id: request.result });
+                    this.recalculateMetrics();
+                    this.renderHomeHubRegistry();
+                    
+                    const globalNotes = document.getElementById('manual-notes-input');
+                    if(globalNotes) globalNotes.value = "";
+                };
             }
-            return dateObj.toISOString(); // Commit proper ISO sequence
-        } catch (e) {
-            // Fallback safe return if date parsing somehow fails
-            return oldIsoStr; 
-        }
-    }
+            deleteEntry(id) {
+                const targetId = parseInt(id);
+                if (isNaN(targetId)) return;
+                if (!confirm("Are you sure you want to permanently delete this entry?")) return;
+                const db = this.db; 
+                if (!db) {
+                    alert("Database connection is not active. Please refresh and try again.");
+                    return;
+                }
+                try {
+                    const storeNames = Array.from(db.objectStoreNames);
+                    let actualStoreName = "";
+                    
+                    if (storeNames.includes("picks")) {
+                        actualStoreName = "picks";
+                    } else if (storeNames.includes("entries")) {
+                        actualStoreName = "entries";
+                    } else if (storeNames.includes("logs")) {
+                        actualStoreName = "logs";
+                    } else if (storeNames.length > 0) {
+                        actualStoreName = storeNames[0]; 
+                    }
+                    if (!actualStoreName) {
+                        alert("No database tables found.");
+                        return;
+                    }
+                    console.log("FloorPace: Deleting from table name ->", actualStoreName);
+                    const transaction = db.transaction(actualStoreName, "readwrite");
+                    const store = transaction.objectStore(actualStoreName);
+                    const request = store.delete(targetId);
+                    request.onsuccess = () => {
+                        this.entries = this.entries.filter(entry => entry.id !== targetId);
+                        this.renderHomeHubRegistry();
+                        
+                        if (typeof renderTimeline === 'function') {
+                            renderTimeline();
+                        }
+                    };
+                    request.onerror = (err) => {
+                        console.error("Failed to delete record:", err);
+                        alert("Database failed to delete item.");
+                    };
+                } catch (err) {
+                    console.error("Transaction failed:", err);
+                    alert("Transaction error: " + err.message);
+                }
+            } 
+            openActiveLogTimeEdit(logId) {
+                if (!this.db || !logId) return;
+                const transaction = this.db.transaction(["logs"], "readonly");
+                const store = transaction.objectStore("logs");
+                const getRequest = store.get(logId);
+                getRequest.onsuccess = (event) => {
+                    const entryRecord = event.target.result;
+                    if (!entryRecord) {
+                        alert("Log entry could not be located in database.");
+                        return;
+                    }
+                    const currentTimeStr = entryRecord.timestamp;
+                    const newTimeInput = prompt(`Edit time for pick originally logged at ${currentTimeStr}.\nEnter corrected time (e.g., 02:30 PM or 14:15):`);
+                    
+                    if (!newTimeInput || newTimeInput === currentTimeStr) return; 
+                    const sanitizedClockStr = this.parseInputToClockString(newTimeInput);
+                    
+                    entryRecord.timestamp = sanitizedClockStr;
+                    entryRecord.rawTimestamp = this.adjustRawISOWithNewClock(entryRecord.rawTimestamp, sanitizedClockStr);
+                    
+                    const writeTx = this.db.transaction(["logs"], "readwrite");
+                    const writeStore = writeTx.objectStore(["logs"]);
+                    const updateRequest = writeStore.put(entryRecord);
+                    updateRequest.onsuccess = () => {
+                        alert("Real-time timestamp updated successfully! Recalculating shift pace...");
+                        this.loadEntriesFromStorage();
+                    };
+                };
+            }
+            parseInputToClockString(inputStr) {
+                inputStr = inputStr.trim();
+                if (/^\d{2}:\d{2}$/.test(inputStr)) {
+                    let [hours, minutes] = inputStr.split(':');
+                    hours = parseInt(hours);
+                    const ampm = hours >= 12 ? 'PM' : 'AM';
+                    hours = hours % 12 || 12; 
+                    return `${String(hours).padStart(2, '0')}:${minutes} ${ampm}`;
+                }
+                return inputStr.toUpperCase(); 
+            }
+            adjustRawISOWithNewClock(oldIsoStr, sanitizedClockStr) {
+                try {
+                    const dateObj = new Date(oldIsoStr);
+                    const match = sanitizedClockStr.match(/(\d+):(\d+)\s*(AM|PM)?/i);
+                    if (match) {
+                        let hours = parseInt(match[1]);
+                        const minutes = parseInt(match[2]);
+                        const ampm = match[3];
+                        if (ampm) {
+                            if (ampm.toUpperCase() === 'PM' && hours < 12) hours += 12;
+                            if (ampm.toUpperCase() === 'AM' && hours === 12) hours = 0; 
+                        }
+                        dateObj.setHours(hours);
+                        dateObj.setMinutes(minutes);
+                    }
+                    return dateObj.toISOString(); 
+                } catch (e) {
+                    return oldIsoStr; 
+                }
+            }
             sealShiftSession() {
                 if (!this.db || !this.currentShiftSessionId) return;
                 if (!confirm("Complete and lock this shift? This saves it cleanly onto your Home dashboard history logs.")) return;
                 
-                // Prompt for final end-of-session summary notes
                 const endOfSessionNotes = prompt("📝 Add any optional End of Session Notes (e.g., manager names, equipment issues, section wrap-ups):");
                 
                 const transaction = this.db.transaction(["logs"], "readwrite");
@@ -812,7 +873,6 @@
                     }
                 });
                 
-                // If the user typed notes, inject them as a final system pin to seal with the session
                 if (endOfSessionNotes && endOfSessionNotes.trim() !== "") {
                     const now = new Date();
                     const finalRecord = {
@@ -825,7 +885,6 @@
                     };
                     store.add(finalRecord);
                 }
-
                 transaction.oncomplete = () => {
                     alert("Shift packed up and recorded cleanly!");
                     this.currentShiftSessionId = null;
@@ -855,16 +914,15 @@
                         this.renderHomeHubRegistry();
                     };
                 }
-            }deleteShiftSession(sessionId) {
+            }
+            deleteShiftSession(sessionId) {
                 if (!this.db) return;
                 if (!confirm("Are you sure you want to delete this specific shift session entirely? This cannot be undone.")) return;
                 
-                // 🌟 FIX: If deleting the currently open active shift, clear out the session state variables first!
                 if (this.currentShiftSessionId === sessionId) {
                     this.currentShiftSessionId = null;
                     this.shiftStartTime = null;
                 }
-
                 const transaction = this.db.transaction(["logs"], "readwrite");
                 const store = transaction.objectStore("logs");
                 
@@ -876,7 +934,6 @@
                     this.loadEntriesFromStorage();
                 };
             }
-            
             getCompiledSessions() {
                 const sessionsMap = {};
                 this.entries.forEach(entry => {
@@ -901,7 +958,6 @@
                 });
                 return Object.values(sessionsMap).sort((a,b) => a.dateObject - b.dateObject);
             }
-
             renderHomeHubRegistry() {
                 const homeList = document.getElementById('home-history-list');
                 if (!homeList) return;
@@ -909,29 +965,28 @@
                 const sessionsMap = {};
                 let overallLifetimePicks = 0;
                 
-               this.entries.forEach(entry => {
-    if (entry.status === "test") return;
-    overallLifetimePicks += (entry.count || 0);
-    
-    const sid = entry.sessionId || "legacy_archive";
-    if (!sessionsMap[sid]) {
-        sessionsMap[sid] = {
-            id: sid,
-            date: entry.rawTimestamp ? entry.rawTimestamp.slice(0,10) : "Historical",
-            totalPicks: 0,
-            isImported: (entry.notes && entry.notes.includes("Import")) || sid.startsWith("imported_"),
-            timeline: []
-        };
-    }
-    sessionsMap[sid].totalPicks += (entry.count || 0);
-    
-    // FIX: Removed the "entry.count > 0" filter so breaks, pins, and section changes make it into history
-    sessionsMap[sid].timeline.push({
-        count: entry.count,
-        timestamp: entry.timestamp || "",
-        notes: entry.notes || ""
-    });
-});
+                this.entries.forEach(entry => {
+                    if (entry.status === "test") return;
+                    overallLifetimePicks += (entry.count || 0);
+                    
+                    const sid = entry.sessionId || "legacy_archive";
+                    if (!sessionsMap[sid]) {
+                        sessionsMap[sid] = {
+                            id: sid,
+                            date: entry.rawTimestamp ? entry.rawTimestamp.slice(0,10) : "Historical",
+                            totalPicks: 0,
+                            isImported: (entry.notes && entry.notes.includes("Import")) || sid.startsWith("imported_"),
+                            timeline: []
+                        };
+                    }
+                    sessionsMap[sid].totalPicks += (entry.count || 0);
+                    
+                    sessionsMap[sid].timeline.push({
+                        count: entry.count,
+                        timestamp: entry.timestamp || "",
+                        notes: entry.notes || ""
+                    });
+                });
                 
                 const totalSessions = Object.keys(sessionsMap).length;
                 document.getElementById('home-stat-lifetime-picks').innerText = overallLifetimePicks;
@@ -955,32 +1010,16 @@
                     let timelineHtml = "";
                     if (session.isImported) {
                         timelineHtml = `<div class="timeline-row" style="color: #888; font-style: italic;">🔒 Summary Log Sheet Protected (Historical Backload Override)</div>`;
-                  } else {
+                    } else {
                         session.timeline.forEach(t => {
                             let displayContent = "";
                             const notesText = t.notes || "";
                             const notesLower = notesText.toLowerCase();
-
                             if (t.count > 0) {
-                                // Keep original formatting for actual pick numbers
                                 displayContent = `📦 <b>${t.count} picks</b> - ${notesText}`;
                             } else {
-                                // Strip box and "0 picks", swap in context emojis for breaks/logs instead
-                                if (notesLower.includes("bathroom") || notesLower.includes("restroom")) {
-                                    displayContent = ` ${notesText}`;
-                                } else if (notesLower.includes("lunch")) {
-                                    displayContent = ` ${notesText}`;
-                                } else if (notesLower.includes("break") || notesLower.includes("pause")) {
-                                    displayContent = ` ${notesText}`;
-                                } else if (notesLower.includes("cleanup") || notesLower.includes("clean")) {
-                                    displayContent = ` ${notesText}`;
-                                } else if (notesLower.includes("section") || notesLower.includes("zone")) {
-                                    displayContent = ` ${notesText}`;
-                                } else {
-                                    displayContent = ` ${notesText}`;
-                                }
+                                displayContent = ` ${notesText}`;
                             }
-
                             timelineHtml += `
                                 <div class="timeline-row">
                                     <span>${displayContent}</span>
@@ -988,7 +1027,6 @@
                                 </div>`;
                         });
                     }
-
                     row.innerHTML = `
                         <div class="history-summary" onclick="this.parentElement.querySelector('.history-details').classList.toggle('expanded')">
                             <div>
@@ -996,9 +1034,9 @@
                                 <div style="color: var(--text-muted); font-size: 0.8rem; margin-top: 2px;">${session.isImported ? 'Spreadsheet Backup File Override Record' : 'Tap to toggle timeframes timeline'}</div>
                             </div>
                             <div style="display: flex; align-items: center; gap: 12px;">
-    <div style="color: #4fc3f7; font-size: 0.85rem; font-weight: bold;">${session.date}</div>
-    <button onclick="event.stopPropagation(); window.floorPace.deleteShiftSession('${session.id}')" style="background: none; border: none; color: #ff5252; cursor: pointer; font-size: 1.1rem; padding: 4px;">🗑️</button>
-</div>
+                                <div style="color: #4fc3f7; font-size: 0.85rem; font-weight: bold;">${session.date}</div>
+                                <button onclick="event.stopPropagation(); window.floorPace.deleteShiftSession('${session.id}')" style="background: none; border: none; color: #ff5252; cursor: pointer; font-size: 1.1rem; padding: 4px;">🗑️</button>
+                            </div>
                         </div>
                         <div class="history-details">
                             ${timelineHtml}
@@ -1009,7 +1047,6 @@
                 
                 this.renderMetricsChart();
             }
-
             renderMetricsChart() {
                 const canvas = document.getElementById('home-performance-canvas');
                 if (!canvas) return;
@@ -1024,7 +1061,6 @@
                 const w = rect.width;
                 const h = rect.height;
                 ctx.clearRect(0, 0, w, h);
-
                 const compiledSessions = this.getCompiledSessions();
                 if (compiledSessions.length === 0) {
                     ctx.fillStyle = "#888888";
@@ -1033,7 +1069,6 @@
                     ctx.fillText("Data visualization updates automatically once shifts are added.", w / 2, h / 2);
                     return;
                 }
-
                 const viewMode = document.getElementById('chart-view-mode').value;
                 const paddingLeft = 35;
                 const paddingRight = 15;
@@ -1041,12 +1076,8 @@
                 const paddingBottom = 25;
                 const graphWidth = w - paddingLeft - paddingRight;
                 const graphHeight = h - paddingTop - paddingBottom;
-
                 if (viewMode === "alltime") {
-                    // 1. ALL TIME TREND LINE
                     let maxPicks = Math.max(...compiledSessions.map(s => s.totalPicks), 50);
-                    
-                    // Draw axis grid line rules
                     ctx.strokeStyle = "#222";
                     ctx.lineWidth = 1;
                     ctx.beginPath();
@@ -1055,19 +1086,14 @@
                     ctx.moveTo(paddingLeft, paddingTop + graphHeight / 2);
                     ctx.lineTo(paddingLeft + graphWidth, paddingTop + graphHeight / 2);
                     ctx.stroke();
-
-                    // Left Axis Labels
                     ctx.fillStyle = "#666";
                     ctx.font = "10px sans-serif";
                     ctx.textAlign = "right";
                     ctx.fillText(maxPicks, paddingLeft - 6, paddingTop + 3);
                     ctx.fillText(Math.floor(maxPicks / 2), paddingLeft - 6, paddingTop + (graphHeight / 2) + 3);
-
-                    // Line Generation Plotting Loop
                     ctx.strokeStyle = "#1565C0";
                     ctx.lineWidth = 3;
                     ctx.beginPath();
-
                     compiledSessions.forEach((session, i) => {
                         const x = paddingLeft + (i / Math.max(compiledSessions.length - 1, 1)) * graphWidth;
                         const y = paddingTop + graphHeight - (session.totalPicks / maxPicks) * graphHeight;
@@ -1075,76 +1101,54 @@
                         else ctx.lineTo(x, y);
                     });
                     ctx.stroke();
-
-                    // Label Start & End
                     ctx.fillStyle = "#aaa";
                     ctx.textAlign = "left";
                     ctx.fillText(compiledSessions[0].dateStr.slice(5), paddingLeft, h - 8);
                     ctx.textAlign = "right";
                     ctx.fillText(compiledSessions[compiledSessions.length-1].dateStr.slice(5), w - paddingRight, h - 8);
-
                 } else if (viewMode === "weekly") {
-                    // 2. LAST 7 ACTIVE DAYS BAR CHART
                     const recent = compiledSessions.slice(-7);
                     let maxPicks = Math.max(...recent.map(s => s.totalPicks), 50);
                     const barGap = 8;
                     const barWidth = (graphWidth / recent.length) - barGap;
-
                     recent.forEach((session, i) => {
                         const x = paddingLeft + (i * (barWidth + barGap)) + (barGap / 2);
                         const bh = (session.totalPicks / maxPicks) * graphHeight;
                         const y = paddingTop + graphHeight - bh;
-
-                        // Create sleek linear look
                         ctx.fillStyle = "#2E7D32";
                         ctx.fillRect(x, y, barWidth, bh);
-
-                        // Top value tag
                         ctx.fillStyle = "#fff";
                         ctx.font = "10px sans-serif";
                         ctx.textAlign = "center";
                         ctx.fillText(session.totalPicks, x + barWidth / 2, y - 5);
-
-                        // Date Labels underneath
                         ctx.fillStyle = "#666";
                         ctx.fillText(session.dateStr.slice(5), x + barWidth / 2, h - 8);
                     });
-
                 } else if (viewMode === "dayofweek") {
-                    // 3. DAY OF WEEK COMPREHENSIVE PROFILE
                     const dayLabels = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
                     const daySums = Array(7).fill(0);
                     const dayCounts = Array(7).fill(0);
-
                     compiledSessions.forEach(s => {
                         const dayIdx = s.dateObject.getDay();
                         daySums[dayIdx] += s.totalPicks;
                         dayCounts[dayIdx] += 1;
                     });
-
                     const dayAverages = daySums.map((sum, idx) => dayCounts[idx] > 0 ? Math.round(sum / dayCounts[idx]) : 0);
                     let maxAvg = Math.max(...dayAverages, 50);
-
                     const barGap = 6;
                     const barWidth = (graphWidth / 7) - barGap;
-
                     dayLabels.forEach((label, i) => {
                         const x = paddingLeft + (i * (barWidth + barGap)) + (barGap / 2);
                         const bh = (dayAverages[i] / maxAvg) * graphHeight;
                         const y = paddingTop + graphHeight - bh;
-
                         ctx.fillStyle = dayAverages[i] === maxAvg ? "#6A1B9A" : "#333333";
                         ctx.fillRect(x, y, barWidth, bh);
-
-                        // Print average values directly on bars
                         if (dayAverages[i] > 0) {
                             ctx.fillStyle = "#fff";
                             ctx.font = "10px sans-serif";
                             ctx.textAlign = "center";
                             ctx.fillText(dayAverages[i], x + barWidth / 2, y - 5);
                         }
-
-                        // X-axis Day labels
                         ctx.fillStyle = "#888";
                         ctx.font = "10px sans-serif";
                         ctx.textAlign = "center";
@@ -1152,59 +1156,39 @@
                     });
                 }
             }
-endShiftEarly() {
-        if (!this.currentShiftSessionId) return;
-
-        // 1. Ask how many hours early the shift is ending (e.g., 2 or 1.5)
-        const userInput = prompt("How many hours earlier are you ending this shift?\n(Enter half hours as decimals, e.g., 1, 1.5, 2, 2.5. Enter 0 if no change):");
-        
-        // If they hit cancel or leave it blank, stop execution
-        if (userInput === null || userInput.trim() === "") return;
-        
-        const hoursEarly = parseFloat(userInput);
-
-        // 2. Validate the input
-        if (isNaN(hoursEarly) || hoursEarly < 0) {
-            alert("Please enter a valid number of hours.");
-            return;
-        }
-
-        // 3. Determine planned shift hours (defaulting to 8 if not found)
-        const plannedHours = this.plannedShiftHours || 8; 
-
-        // 4. Calculate actual hours worked by subtracting hoursEarly from plannedHours
-        const actualHoursWorked = plannedHours - hoursEarly;
-
-        if (actualHoursWorked <= 0) {
-            alert(`Error: Ending ${hoursEarly} hours early on a ${plannedHours}-hour shift leaves 0 or negative work hours. Please re-enter.`);
-            return;
-        }
-
-        // 5. Calculate the new prorated quota
-        const originalQuota = this.shiftTotalGoal;
-        const proratedQuota = Math.round((originalQuota / plannedHours) * actualHoursWorked);
-
-        // 6. Confirm the adjustment with the user
-        const confirmMessage = `Confirm Shift Adjustment:\n\n` +
-                               `• Original Shift Length: ${plannedHours} hours\n` +
-                               `• Hours Leaving Early: ${hoursEarly} hours\n` +
-                               `• Adjusted Quota: ${proratedQuota}\n\n` +
-                               `Does this look right?`;
-
-        if (confirm(confirmMessage)) {
-            // Apply the new adjusted quota goal to this session
-            this.shiftTotalGoal = proratedQuota;
-            
-            // Log an action pin in the timeline noting the exact adjustment
-            this.addEntry(0, `⚠️ Shift ended ${hoursEarly}h early. Quota adjusted from ${originalQuota} to ${proratedQuota}.`);
-            
-            // Trigger your standard sealing routine with the new quota intact
-            setTimeout(() => {
-                this.sealShiftSession();
-            }, 500);
-        }
-    }
-recalculateMetrics() {
+            endShiftEarly() {
+                if (!this.currentShiftSessionId) return;
+                const userInput = prompt("How many hours earlier are you ending this shift?\n(Enter half hours as decimals, e.g., 1, 1.5, 2, 2.5. Enter 0 if no change):");
+                
+                if (userInput === null || userInput.trim() === "") return;
+                
+                const hoursEarly = parseFloat(userInput);
+                if (isNaN(hoursEarly) || hoursEarly < 0) {
+                    alert("Please enter a valid number of hours.");
+                    return;
+                }
+                const plannedHours = this.totalShiftTargetHours || 8; 
+                const actualHoursWorked = plannedHours - hoursEarly;
+                if (actualHoursWorked <= 0) {
+                    alert(`Error: Ending ${hoursEarly} hours early on a ${plannedHours}-hour shift leaves 0 or negative work hours. Please re-enter.`);
+                    return;
+                }
+                const originalQuota = this.shiftTotalGoal;
+                const proratedQuota = Math.round((originalQuota / plannedHours) * actualHoursWorked);
+                const confirmMessage = `Confirm Shift Adjustment:\n\n` +
+                                       `• Original Shift Length: ${plannedHours} hours\n` +
+                                       `• Hours Leaving Early: ${hoursEarly} hours\n` +
+                                       `• Adjusted Quota: ${proratedQuota}\n\n` +
+                                       `Does this look right?`;
+                if (confirm(confirmMessage)) {
+                    this.shiftTotalGoal = proratedQuota;
+                    this.addEntry(0, `⚠️ Shift ended ${hoursEarly}h early. Quota adjusted from ${originalQuota} to ${proratedQuota}.`);
+                    setTimeout(() => {
+                        this.sealShiftSession();
+                    }, 500);
+                }
+            }
+            recalculateMetrics() {
                 if (!this.currentShiftSessionId) return;
                 const activeSessionRecords = this.entries.filter(e => e.sessionId === this.currentShiftSessionId);
                 let grandTotalPicks = 0;
@@ -1221,7 +1205,6 @@ recalculateMetrics() {
                     if (timerDisplay) timerDisplay.innerText = `${bMin}:${bSec}`;
                 }
                 
-                // Pure active time math: Total time minus ALL breaks (past and current)
                 let diffMs = 0;
                 if (this.shiftStartTime) {
                     const totalElapsed = now - this.shiftStartTime;
@@ -1230,8 +1213,6 @@ recalculateMetrics() {
                 }
                 if (diffMs < 0) diffMs = 0;
                 
-                // Convert to hours. If it's 0 (frozen on break), we prevent division by zero gracefully 
-                // without forcing artificial time to tick forward.
                 const totalHoursElapsed = diffMs / (1000 * 60 * 60);
                 const computedLivePace = totalHoursElapsed > 0 ? (grandTotalPicks / totalHoursElapsed) : 0;
                 
@@ -1241,28 +1222,24 @@ recalculateMetrics() {
                 let unitsLeftToTarget = this.shiftTotalGoal - grandTotalPicks;
                 if (unitsLeftToTarget < 0) unitsLeftToTarget = 0;
                 
-                // Render Stats Card
                 document.getElementById('stat-pace').innerHTML = `${computedLivePace.toFixed(1)}<span style="font-size: 1rem; color: var(--text-muted);">/hr</span>`;
                 document.getElementById('stat-total').innerText = grandTotalPicks;
                 document.getElementById('stat-elapsed').innerText = `${hoursElapsed}h ${minutesElapsed}m`;
                 document.getElementById('stat-needed').innerText = unitsLeftToTarget;
                 document.getElementById('stat-progress-text').innerText = `${grandTotalPicks} / ${this.shiftTotalGoal} Picks`;
-
-                // Progress Bar 
+                
                 const progressPercent = Math.min((grandTotalPicks / this.shiftTotalGoal) * 100, 100);
                 const progressBarFill = document.getElementById('stat-progress-fill');
                 progressBarFill.style.width = `${progressPercent}%`;
-
-                // Dynamic Progress Bar Colors
+                
                 if (progressPercent < 50) {
-                    progressBarFill.style.backgroundColor = '#ff4c4c'; // Red
+                    progressBarFill.style.backgroundColor = '#ff4c4c'; 
                 } else if (progressPercent < 100) {
-                    progressBarFill.style.backgroundColor = '#ffd700'; // Yellow
+                    progressBarFill.style.backgroundColor = '#ffd700'; 
                 } else {
-                    progressBarFill.style.backgroundColor = '#32cd32'; // Green
+                    progressBarFill.style.backgroundColor = '#32cd32'; 
                 }
-
-                // Render Current Shift Log List Timeline
+                
                 const runningTimelineContainer = document.getElementById('live-history-list');
                 if (runningTimelineContainer) {
                     runningTimelineContainer.innerHTML = "";
@@ -1276,7 +1253,7 @@ recalculateMetrics() {
                                     <div style="font-weight: bold;">${item.count === 0 ? "📍 Action Pin" : `${item.count} Items`}</div>
                                     <div style="color: var(--text-muted); font-size: 0.8rem;">${item.notes}</div>
                                 </div>
-                                <div style="color: var(--text-muted); font-size: 0.85rem;">${item.timestamp} <button onclick="window.floorPace.openActiveLogTimeEdit(${item.id})" style="background: transparent; border: none; color: #888; cursor: pointer; padding: 0 4px; font-size: 0.8rem; vertical-align: middle;">✏️</button></div>
+                                <div style="color: var(--text-muted); font-size: 0.85rem;">${item.timestamp} <button onclick="window.floorPace.openActiveLogTimeEdit(${item.id})" style="background: transparent; border: none; color: #888; cursor: pointer; padding: 0 4px; font-size: 0.8rem; vertical-align: middle;">✏️</button> <button onclick="window.floorPace.deleteEntry(${item.id})" style="background: transparent; border: none; color: #888; cursor: pointer; padding: 0 4px; font-size: 0.8rem; vertical-align: middle;">🗑️</button></div>
                             </div>
                         `;
                         runningTimelineContainer.appendChild(row);
@@ -1306,7 +1283,7 @@ recalculateMetrics() {
                 a.download = `floorpace_master_backup_${new Date().toISOString().slice(0,10)}.csv`;
                 a.click();
             }
-       importData() {
+            importData() {
                 const picker = document.createElement('input');
                 picker.type = 'file';
                 picker.accept = '.csv';
@@ -1343,7 +1320,6 @@ recalculateMetrics() {
                             const parsedEntries = [];
                             for (let i = 1; i < lines.length; i++) {
                                 const vals = parseCSVRow(lines[i]);
-                                // This keeps ALL lines, even breaks where count is 0
                                 if (!vals[countIdx] && vals[countIdx] !== "0") continue; 
                                 
                                 parsedEntries.push({
@@ -1355,22 +1331,17 @@ recalculateMetrics() {
                                     sessionId: sessIdx !== -1 && vals[sessIdx] ? vals[sessIdx].replace(/(^"|"$)/g, '') : "imported_historic_" + i
                                 });
                             }
-
-                            // Database integration
                             const readTx = this.db.transaction(["logs"], "readonly");
                             const readStore = readTx.objectStore("logs");
                             readStore.getAll().onsuccess = (event) => {
                                 const accurateLogs = event.target.result || [];
                                 const existingRawTimes = {};
-                                // Use rawTimestamp to prevent importing duplicates
                                 accurateLogs.forEach(ent => {
                                     if (ent.rawTimestamp) existingRawTimes[ent.rawTimestamp] = true;
                                 });
-
                                 const writeTx = this.db.transaction(["logs"], "readwrite");
                                 const writeStore = writeTx.objectStore("logs");
                                 let importedItemsCount = 0;
-
                                 parsedEntries.forEach(record => {
                                     if (!existingRawTimes[record.rawTimestamp]) {
                                         writeStore.add(record);
@@ -1409,6 +1380,7 @@ recalculateMetrics() {
             };
             reader.readAsDataURL(input.files[0]);
         }
+
         function switchTab(tabId) {
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
@@ -1416,27 +1388,44 @@ recalculateMetrics() {
             if (btn) btn.classList.add('active');
             document.getElementById(`tab-${tabId}`).classList.add('active');
         }
-        function openManualEntry() { document.getElementById('manual-modal').style.display = 'flex'; document.getElementById('manual-count-input').focus(); }
-        function closeManualEntry() { document.getElementById('manual-modal').style.display = 'none'; document.getElementById('manual-count-input').value = ''; document.getElementById('manual-test-check').checked = false; }
+
+        function openManualEntry() { 
+            document.getElementById('manual-modal').style.display = 'flex'; 
+            document.getElementById('manual-count-input').focus(); 
+        }
+
+        function closeManualEntry() { 
+            document.getElementById('manual-modal').style.display = 'none'; 
+            document.getElementById('manual-count-input').value = ''; 
+        }
+
         function submitManualEntry() {
             const count = document.getElementById('manual-count-input').value;
             const notes = document.getElementById('manual-notes-input').value;
             const tag = document.getElementById('global-tag-select').value;
-            const isTest = document.getElementById('manual-test-check').checked;
+            const activeMode = document.getElementById('global-session-mode').value;
+            
             if (count && parseInt(count) > 0) {
                 const start = window.currentActiveList ? window.currentActiveList.startTime : new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                window.currentActiveList = { count: parseInt(count), notes, tagType: tag, transfer: false, testMode: isTest, startTime: start };
+                window.currentActiveList = { 
+                    count: parseInt(count), 
+                    notes, 
+                    tagType: tag, 
+                    transfer: false, 
+                    sessionMode: activeMode, 
+                    startTime: start 
+                };
                 updateActiveCardUI();
                 document.getElementById('active-list-card').style.display = 'flex';
                 closeManualEntry();
             }
         }
+
         function instantDirectLog(countValue) {
             if (!window.floorPace || !window.floorPace.db || !window.floorPace.currentShiftSessionId) {
                 alert("Please start a shift session before logging picks!");
                 return;
             }
-
             const transaction = window.floorPace.db.transaction(["logs"], "readwrite");
             const store = transaction.objectStore("logs");
             
@@ -1447,30 +1436,31 @@ recalculateMetrics() {
                 notes: "⚡ Quick Picked",
                 timestamp: now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
                 rawTimestamp: now.toISOString(),
-                status: "active" // Sets it as active for your running shift counts
+                status: "active" 
             };
-
             store.add(logRecord);
-
             transaction.oncomplete = () => {
-                // Instantly recalculate rates, progress bars, and historical list logs
                 window.floorPace.loadEntriesFromStorage();
             };
         }
-        function toggleActiveTransfer() { if (window.currentActiveList) { window.currentActiveList.transfer = !window.currentActiveList.transfer; updateActiveCardUI(); } }
-      function editActiveNotes() {
+
+        function toggleActiveTransfer() { 
+            if (window.currentActiveList) { 
+                window.currentActiveList.transfer = !window.currentActiveList.transfer; 
+                updateActiveCardUI(); 
+            } 
+        }
+
+        function editActiveNotes() {
             if (!window.currentActiveList) return;
-            
-            // Prompt the user for notes, showing their current notes as the default value
             const existingNotes = window.currentActiveList.notes || "";
             const newNotes = prompt("✏️ Edit notes for this staged pick:", existingNotes);
-            
-            // If they didn't click cancel, update the note
             if (newNotes !== null) {
                 window.currentActiveList.notes = newNotes.trim();
                 updateActiveCardUI();
             }
         }
+
         function modifyActivePickAmount(amountModifier) {
             if (!window.currentActiveList) {
                 alert("No active pick session running!");
@@ -1478,68 +1468,71 @@ recalculateMetrics() {
             }
             let currentCount = parseInt(window.currentActiveList.count) || 0;
             let newCount = currentCount + amountModifier;
-            
-            // Prevent dropping below 0 picks
             window.currentActiveList.count = newCount < 0 ? 0 : newCount;
-            
-            // Update UI card display in real-time
             updateActiveCardUI();
         }
+
         function updateActiveCardUI() {
             if (!window.currentActiveList) return;
+            
+            // Sync the text box with current notes
+            const activeInput = document.getElementById('active-note-input');
+            if (activeInput) activeInput.value = window.currentActiveList.notes || "";
+
             let text = `[${window.currentActiveList.tagType}]`;
             const btn = document.getElementById('active-transfer-toggle');
             if (window.currentActiveList.transfer) {
-                text += ` 🔄 TRANSFER`; btn.style.backgroundColor = "#E65100"; btn.innerText = "🔄 Transfer Run Staged";
+                text += ` 🔄 TRANSFER`; 
+                btn.style.backgroundColor = "#E65100"; 
+                btn.innerText = "🔄 Transfer Run Staged";
             } else {
-                btn.style.backgroundColor = "rgba(21, 101, 192, 0.4)"; btn.innerText = "🔄 Toggle Transfer Note";
+                btn.style.backgroundColor = "rgba(21, 101, 192, 0.4)"; 
+                btn.innerText = "🔄 Toggle Transfer Note";
             }
-            if (window.currentActiveList.testMode) text += ` 🧪 TEST`;
+            if (window.currentActiveList.sessionMode === 'training') {
+                text += ` 🔰 TRAINING`;
+            } else if (window.currentActiveList.sessionMode === 'test') {
+                text += ` 🧪 TEST`;
+            }
             document.getElementById('active-list-count').innerText = window.currentActiveList.count;
             document.getElementById('active-list-notes').innerText = `${text} Started at ${window.currentActiveList.startTime}`;
         }
-        function abandonActiveList() { if(confirm("Discard?")) { window.currentActiveList = null; document.getElementById('active-list-card').style.display = 'none'; } }
-      // REPLACE your standalone completeActiveList function (near the end of the file):
-function completeActiveList() {
-    if (window.currentActiveList && window.floorPace) {
-        const now = new Date();
-        
-        // Formatting the notes string as before.
-        let notesString = `[${window.currentActiveList.tagType}]`;
-        if (window.currentActiveList.transfer) notesString += " 🔄 TRANSFER RUN";
-        if (window.currentActiveList.notes) notesString += ` - ${window.currentActiveList.notes}`;
-        
-        // 🌟 Fix #4 (The Core Logic): Calculate the Duration
-        // Extract the original manual start time from the object.
-        const manualStartTimeStr = window.currentActiveList.startTime; 
-        
-        // Standardize the current time string (e.g., 02:30 PM)
-        const endTimeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-        // Build the full duration string (e.g., "02:27 PM - 02:30 PM")
-        const fullDurationTimeString = `${manualStartTimeStr} - ${endTimeStr}`;
+        function abandonActiveList() { 
+            if(confirm("Discard?")) { 
+                window.currentActiveList = null; 
+                document.getElementById('active-list-card').style.display = 'none'; 
+            } 
+        }
 
-        // 🌟 Fix #2 (Clearing Notes): Important, we pass the current global notes input 
-        // to `addEntry`, which then clears it immediately after the database save.
-        
-        // Submit the final log entry using the NEW fullDurationTimeString as the main timestamp identifier.
-        // This will be stored as the definitive 'Time' for this pick log.
-        window.floorPace.addEntry(
-            window.currentActiveList.count, 
-            notesString.trim(), 
-            fullDurationTimeString // Passing duration string as the time value.
-        );
-        
-        // Clean up and reset.
-        window.currentActiveList = null;
-        document.getElementById('active-list-card').style.display = 'none';
-        
-        // Double-check the notes input is empty (handled by addEntry but useful as a safety).
-        const notesInput = document.getElementById('manual-notes-input');
-        if (notesInput) notesInput.value = "";
-    }
-}
-        function logSectionChange(zone) { window.floorPace.addEntry(0, `📍 Section: ${zone}`); }
+        function completeActiveList() {
+            if (window.currentActiveList && window.floorPace) {
+                const now = new Date();
+                let notesString = `[${window.currentActiveList.tagType}]`;
+                if (window.currentActiveList.transfer) notesString += " 🔄 TRANSFER RUN";
+                if (window.currentActiveList.notes) notesString += ` - ${window.currentActiveList.notes}`;
+                
+                const manualStartTimeStr = window.currentActiveList.startTime; 
+                const endTimeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                const fullDurationTimeString = `${manualStartTimeStr} - ${endTimeStr}`;
+                
+                window.floorPace.addEntry(
+                    window.currentActiveList.count, 
+                    notesString.trim(), 
+                    fullDurationTimeString 
+                );
+                
+                window.currentActiveList = null;
+                document.getElementById('active-list-card').style.display = 'none';
+                
+                const notesInput = document.getElementById('manual-notes-input');
+                if (notesInput) notesInput.value = "";
+            }
+        }
+
+        function logSectionChange(zone) { 
+            window.floorPace.addEntry(0, `📍 Section: ${zone}`); 
+        }
 
         document.addEventListener("DOMContentLoaded", () => {
             window.floorPace = new FloorPaceEngine();
@@ -1558,9 +1551,13 @@ function completeActiveList() {
                     if (active.length > 0) last = new Date(active[active.length - 1].rawTimestamp);
                     const mins = Math.floor((new Date() - last) / (1000 * 60));
                     if (mins >= 30) {
-                        warning.style.display = 'block'; warning.style.backgroundColor = '#B71C1C'; warning.innerHTML = `⚠️ CRITICAL DELAY: ${mins} Mins Idle!`;
+                        warning.style.display = 'block'; 
+                        warning.style.backgroundColor = '#B71C1C'; 
+                        warning.innerHTML = `⚠️ CRITICAL DELAY: ${mins} Mins Idle!`;
                     } else if (mins >= 20) {
-                        warning.style.display = 'block'; warning.style.backgroundColor = '#E65100'; warning.innerHTML = `⏳ GAP WARNING: ${mins} Mins Idle.`;
+                        warning.style.display = 'block'; 
+                        warning.style.backgroundColor = '#E65100'; 
+                        warning.innerHTML = `⏳ GAP WARNING: ${mins} Mins Idle.`;
                     } else warning.style.display = 'none';
                 }
             }, 1000);
