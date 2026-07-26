@@ -291,6 +291,7 @@
                     <option value="16">16 Picks / Hour</option>
                     <option value="18">18 Picks / Hour</option>
                     <option value="20">20 Picks / Hour</option>
+                    <option value="25">25 Picks / Hour</option>
                     <option value="40">40 Picks / Hour</option>
                 </select>
             </div>
@@ -325,8 +326,9 @@
             </div>
             <div style="flex: 1; min-width: 160px;">
                 <label style="color: var(--text-muted); font-size: 0.75rem; display: block; margin-bottom: 4px; font-weight: bold;">SESSION MODE</label>
-                <select id="global-session-mode" style="width: 100%; height: 36px; background-color: #000; border: 1px solid #444; border-radius: 8px; color: #fff; padding: 0 6px;">
-                    <option value="standard" selected>🟢 Standard Mode</option>
+                <select id="global-session-mode" onchange="if(window.floorPace && window.floorPace.addEntry){ window.floorPace.addEntry(0, `⚙️ Switched to ${this.options[this.selectedIndex].text}.`); }" style="width: 100%; height: 36px; background-color: #000; border: 1px solid #444; border-radius: 8px; color: #fff; padding: 0 6px;">
+                    <option value="standard" selected>🍴 Forklift Mode</option>
+                    <option value="tug">🚜 Tug Mode</option>
                     <option value="training">🔰 Training Mode</option>
                     <option value="test">🧪 Test Mode</option>
                 </select>
@@ -360,7 +362,13 @@
                 <button type="button" onclick="appendQuickNote('Klearview Pallet', this)" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; border-radius: 20px; padding: 6px 12px; font-size: 11px; cursor: pointer; font-weight: 600; transition: background 0.1s ease;">+ Klearview Pallet</button>
                 <button type="button" onclick="appendQuickNote('Double Pallet', this)" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; border-radius: 20px; padding: 6px 12px; font-size: 11px; cursor: pointer; font-weight: 600; transition: background 0.1s ease;">+ Double Pallet</button>
                 <button type="button" onclick="appendQuickNote('Clamp Used', this)" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; border-radius: 20px; padding: 6px 12px; font-size: 11px; cursor: pointer; font-weight: 600; transition: background 0.1s ease;">+ Clamp Used</button>
-                 <button type="button" onclick="appendQuickNote('2nd Level Grab', this)" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; border-radius: 20px; padding: 6px 12px; font-size: 11px; cursor: pointer; font-weight: 600; transition: background 0.1s ease;">+ 2nd Level Grab</button>
+              <button type="button" onclick="appendQuickNote('High rise', this)" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; border-radius: 20px; padding: 6px 12px; font-size: 11px; cursor: pointer; font-weight: 600; transition: background 0.1s ease;">+ High rise</button>
+                <button type="button" onclick="appendQuickNote('Cage', this)" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; border-radius: 20px; padding: 6px 12px; font-size: 11px; cursor: pointer; font-weight: 600; transition: background 0.1s ease;">+ Cage</button>
+                <button type="button" onclick="appendQuickNote('Metal pallet', this)" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; border-radius: 20px; padding: 6px 12px; font-size: 11px; cursor: pointer; font-weight: 600; transition: background 0.1s ease;">+ Metal pallet</button>
+                     <button type="button" onclick="appendQuickNote('Slip Sheet', this)" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; border-radius: 20px; padding: 6px 12px; font-size: 11px; cursor: pointer; font-weight: 600; transition: background 0.1s ease;">+ Slip Sheet</button>
+        <button type="button" onclick="appendQuickNote('Banded', this)" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; border-radius: 20px; padding: 6px 12px; font-size: 11px; cursor: pointer; font-weight: 600; transition: background 0.1s ease;">+ Banded</button>
+        <button type="button" onclick="appendQuickNote('Premade Pallet', this)" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; border-radius: 20px; padding: 6px 12px; font-size: 11px; cursor: pointer; font-weight: 600; transition: background 0.1s ease;">+ Premade Pallet</button>
+                <button type="button" onclick="appendQuickNote('2nd Level Grab', this)" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; border-radius: 20px; padding: 6px 12px; font-size: 11px; cursor: pointer; font-weight: 600; transition: background 0.1s ease;">+ 2nd Level Grab</button>
                   <button type="button" onclick="appendQuickNote('3rd Level Grab', this)" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; border-radius: 20px; padding: 6px 12px; font-size: 11px; cursor: pointer; font-weight: 600; transition: background 0.1s ease;">+ 3rd Level Grab</button>
                    <button type="button" onclick="appendQuickNote('4th Level Grab', this)" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; border-radius: 20px; padding: 6px 12px; font-size: 11px; cursor: pointer; font-weight: 600; transition: background 0.1s ease;">+ 4th Level Grab</button>
             </div>
@@ -388,17 +396,34 @@
                 <span class="metric-value" id="stat-needed">0</span>
             </div>
         </div>
-        <div class="progress-container">
-            <div style="display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 600;">
-                <span style="color: var(--text-muted);">Shift Quota Progress</span>
-                <span id="stat-progress-text">0 / 120 Picks</span>
-            </div>
-            <div class="progress-bar-bg">
-                <div class="progress-bar-fill" id="stat-progress-fill"></div>
-            </div>
+        <!-- Main Side-by-Side Wrapper -->
+<div style="display: flex; gap: 12px; align-items: stretch; width: 100%; margin-bottom: 12px;">
+
+    <!-- Left Side: Shift Quota Progress (Takes 3/4 of space) -->
+    <div class="progress-container" style="flex: 3; margin-bottom: 0;">
+        <div style="display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 600;">
+            <span style="color: var(--text-muted);">Shift Quota Progress</span>
+            <span id="stat-progress-text">0 / 120 Picks</span>
         </div>
-        <div id="live-delay-warning" style="display: none; padding: 14px; border-radius: 12px; margin-bottom: 16px; font-weight: bold; text-align: center;"></div>
-        
+        <div class="progress-bar-bg">
+            <div class="progress-bar-fill" id="stat-progress-fill"></div>
+        </div>
+    </div>
+
+    <!-- Right Side: Total Break Time Counter (Takes 1/4 of space) -->
+    <div id="break-tracker-card" style="flex: 1; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 8px 12px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;">
+        <div style="font-size: 0.7rem; color: #888; text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px; white-space: nowrap;">
+            Break Time
+        </div>
+        <div id="total-break-timer" style="font-size: 1.1rem; font-weight: bold; color: #60a5fa; font-family: monospace; margin-top: 2px;">
+            0m 00s
+        </div>
+    </div>
+
+</div>
+
+<!-- Delay Warning stays below -->
+<div id="live-delay-warning" style="display: none; padding: 14px; border-radius: 12px; margin-bottom: 16px; font-weight: bold; text-align: center;"></div>
         <!-- Delays -->
 <!-- Delays -->
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; margin-bottom: 16px;">
@@ -496,6 +521,38 @@
     </div>
 
     <script>
+// === ROLLING BREAK TIMER ENGINE (MATCHED TO YOUR EMOJI BUTTONS) ===
+// === ROLLING PERSONAL BREAK CALCULATOR ===
+        function updateRollingBreakTime() {
+            const fp = window.floorPace;
+            const timerElem = document.getElementById('total-break-timer');
+            if (!timerElem) return;
+
+            if (!fp) {
+                timerElem.innerText = "0m 00s";
+                return;
+            }
+
+            // Start with completed personal breaks
+            let totalMs = fp.totalPersonalBreakMs || 0;
+
+            // If currently on an ACTIVE personal break, add rolling seconds right now
+            if (fp.isOnBreak && fp.breakStartTime && fp.currentBreakType) {
+                const type = fp.currentBreakType.toLowerCase();
+                const isPersonal = type.includes('10') || type.includes('lunch') || type.includes('bathroom');
+
+                if (isPersonal) {
+                    totalMs += (new Date() - new Date(fp.breakStartTime));
+                }
+            }
+
+            // Convert to minutes & seconds
+            const totalSeconds = Math.floor(totalMs / 1000);
+            const minutes = Math.floor(totalSeconds / 60);
+            const seconds = totalSeconds % 60;
+
+            timerElem.innerText = `${minutes}m ${seconds < 10 ? '0' : ''}${seconds}s`;
+        }
         // === SMART QUICK NOTES ENGINE ===
         function appendQuickNote(noteText, btn) {
             // 1. Temporary Highlight Effect
@@ -671,10 +728,13 @@
                 if (this.isOnBreak) return;
                 this.isOnBreak = true;
                 this.breakStartTime = new Date();
+                this.currentBreakType = breakType; // <--- SAVE CURRENT BREAK TYPE
+
                 ['btn-break-10', 'btn-break-lunch', 'btn-break-bathroom', 'btn-break-cleanup', 'btn-break-lm'].forEach(id => {
                     const btn = document.getElementById(id);
                     if (btn) { btn.disabled = true; btn.style.opacity = "0.4"; }
                 });
+
                 const banner = document.getElementById('break-status-banner');
                 if (banner) {
                     banner.style.display = 'flex';
@@ -683,15 +743,30 @@
                 }
                 this.addEntry(0, `⏸️ Paused pace math for: ${breakType}.`);
             }
+
             endBreak(breakType) {
                 if (!this.isOnBreak) return;
                 const now = new Date();
-                this.totalBreakDeductionMs += (now - this.breakStartTime);
+                const duration = now - this.breakStartTime;
+
+                this.totalBreakDeductionMs += duration;
+
+                // Track ONLY personal breaks (10-min, lunch, bathroom)
+                const type = (breakType || this.currentBreakType || '').toLowerCase();
+                const isPersonal = type.includes('10') || type.includes('lunch') || type.includes('bathroom');
+
+                if (isPersonal) {
+                    this.totalPersonalBreakMs = (this.totalPersonalBreakMs || 0) + duration;
+                }
+
                 this.isOnBreak = false;
                 this.breakStartTime = null;
+                this.currentBreakType = null;
+
                 const banner = document.getElementById('break-status-banner');
                 if (banner) banner.style.display = 'none';
-               [
+
+                [
                     ['btn-break-10', '☕ 10-MIN BREAK'], 
                     ['btn-break-lunch', '🍱 LUNCH'], 
                     ['btn-break-bathroom', '🧻 BATHROOM'], 
@@ -706,6 +781,9 @@
                     }
                 });
                 this.addEntry(0, `🏁 Ended ${breakType}.`);
+
+                // Update UI immediately when break ends
+                updateRollingBreakTime();
             }
             addEntry(count, notes = "", startTimeStr = null) {
                 if (!this.db) return;
@@ -872,23 +950,43 @@
                         store.put(entry);
                     }
                 });
+
+                const totalMs = this.totalPersonalBreakMs || 0;
+                const totalSec = Math.floor(totalMs / 1000);
+                const breakMins = Math.floor(totalSec / 60);
+                const breakSecs = totalSec % 60;
+                const finalBreakFormatted = `${breakMins}m ${breakSecs < 10 ? '0' : ''}${breakSecs}s`;
+
+                const now = new Date();
+                const timestampStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+                const breakSummaryRecord = {
+                    sessionId: this.currentShiftSessionId,
+                    count: 0,
+                    notes: `☕ Total Personal Break Time: ${finalBreakFormatted}`,
+                    timestamp: timestampStr,
+                    rawTimestamp: now.toISOString(),
+                    status: "sealed"
+                };
+                store.add(breakSummaryRecord);
                 
                 if (endOfSessionNotes && endOfSessionNotes.trim() !== "") {
-                    const now = new Date();
                     const finalRecord = {
                         sessionId: this.currentShiftSessionId,
                         count: 0,
                         notes: `📝 End of Session Notes: ${endOfSessionNotes.trim()}`,
-                        timestamp: now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                        timestamp: timestampStr,
                         rawTimestamp: now.toISOString(),
                         status: "sealed"
                     };
                     store.add(finalRecord);
                 }
+
                 transaction.oncomplete = () => {
                     alert("Shift packed up and recorded cleanly!");
                     this.currentShiftSessionId = null;
                     this.shiftStartTime = null;
+                    this.totalPersonalBreakMs = 0; 
                     this.loadEntriesFromStorage(() => {
                         this.navigateToScreen('home');
                     });
@@ -1560,6 +1658,7 @@
                         warning.innerHTML = `⏳ GAP WARNING: ${mins} Mins Idle.`;
                     } else warning.style.display = 'none';
                 }
+                updateRollingBreakTime(); 
             }, 1000);
         });
     </script>
