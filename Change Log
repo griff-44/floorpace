@@ -35,3 +35,9 @@ Added a dedicated "Klearview" selection to the location options.
 Added a new 40-per-hour productivity rate preset.
 Added a pause button for LM briefings, huddles, and meetings.
 New Feature: Added Quick Notes: quick-tap presets for commonly occurring notes. 
+
+V 0.6
+Rolling Break Engine: Added live counter for personal breaks and automatic end-of-shift break total logging.
+Tug Mode & Mode Updates: Added Tug Mode support and renamed Standard Mode to Forklift Mode.
+New Quick Tags: Added High rise, Cage, Metal pallet, Premade pallet, Banded, and Slip sheet.
+25 PPH Pace Option: Added 25 picks/hour rate target option.
