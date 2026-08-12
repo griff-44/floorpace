@@ -41,3 +41,11 @@ Rolling Break Engine: Added live counter for personal breaks and automatic end-o
 Tug Mode & Mode Updates: Added Tug Mode support and renamed Standard Mode to Forklift Mode.
 New Quick Tags: Added High rise, Cage, Metal pallet, Premade pallet, Banded, and Slip sheet.
 25 PPH Pace Option: Added 25 picks/hour rate target option.
+
+V 0.7
+New Feature: Added a "How to Use" guide button to the header
+Consolidated Quick Tags into a drop-down menu to save screen space
+New Quick Tags: Added Self load and Stick pull
+Added 60 picks/hour rate target option
+Added Fencing Location option
+Removed camera and scanner features to streamline performance
