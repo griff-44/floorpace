@@ -49,3 +49,9 @@ New Quick Tags: Added Self load and Stick pull
 Added 60 picks/hour rate target option
 Added Fencing Location option
 Removed camera and scanner features to streamline performance
+
+V 0.7.1
+Fixed UI layout glitch where staging controls overlapped into History tab
+Cleaned up SOC tag whitespace formatting for accurate matching  
+New Quick Tags: Added Long pallet and Fragile
+Added 9-hour shift duration option
