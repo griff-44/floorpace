@@ -214,7 +214,6 @@
     
 </head>
 <body>
-    <!-- SCREEN 1: HOMEPAGE HUB -->
     <div id="screen-home" class="app-screen active">
         <header>
             <div>
@@ -223,7 +222,6 @@
             </div>
             <button class="btn-secondary" style="background-color: var(--accent-green);" onclick="window.floorPace.startNewShiftSession()">🚀 START SHIFT</button>
         </header>
-        <!-- Lifetime Stats -->
         <div class="metric-grid">
             <div class="metric-card" style="background: linear-gradient(145deg, #0d1b2a, #121212);">
                 <span class="metric-label" style="color: #415a77;">Lifetime Total Picks</span>
@@ -234,12 +232,10 @@
                 <span class="metric-value" id="home-stat-shift-count">0</span>
             </div>
         </div>
-        <!-- Averaging Calculations Display Banner -->
         <div class="metric-card" style="background: linear-gradient(145deg, #14251c, #121212); margin-bottom: 16px; border: 1px solid #1e3d29;">
             <span class="metric-label" style="color: #52b788;">Average Picks Per Shift</span>
             <span class="metric-value" id="home-stat-avg-picks" style="color: #74c69d;">0.0 <span style="font-size:0.9rem; font-weight:normal; color:#888;">items / session</span></span>
         </div>
-        <!-- Interactive Visualizer Engine Card -->
         <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 16px; margin-bottom: 20px;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
                 <span class="metric-label" style="margin-bottom: 0;">📉 Performance Insights</span>
@@ -253,7 +249,6 @@
                 <canvas id="home-performance-canvas" style="width: 100%; height: 100%; display: block;"></canvas>
             </div>
         </div>
-        <!-- Backups Management -->
         <div style="background: #151515; padding: 16px; border-radius: 16px; border: 1px solid #252525; margin-bottom: 20px;">
             <h4 style="font-size: 0.9rem; margin-bottom: 10px; color: #aaa;">📊 Database Management & Backups</h4>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
@@ -270,21 +265,15 @@
         </div>
     </div>
 
-    <!-- SCREEN 2: ACTIVE LIVE TRACKER SHIFT MODE -->
     <div id="screen-tracker" class="app-screen">
        <header>
     <div style="display: flex; flex-direction: column; width: 100%;">
-        <!-- Top row: Back button -->
         <div>
             <button class="btn-secondary" style="background-color: #333; padding: 6px 12px; margin-bottom: 6px; font-size: 0.75rem;" onclick="window.floorPace.navigateToScreen('home')">⬅️ Back to Home Hub</button>
         </div>
 
-        <!-- Middle row: Title & Clock -->
         <h1 style="color: #4fc3f7; margin-bottom: 4px;">Live Tracking Session</h1>
-        <!-- Added margin-bottom: 16px to create extra breathing room -->
         <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1px;" id="shift-clock">Shift started: --:--</p>
-
-        <!-- Bottom row: Button aligned all the way to the right -->
         <div style="display: flex; justify-content: flex-end; width: 100%;">
             <button type="button" onclick="openTutorialModal()" style="background: linear-gradient(135deg, #2563eb, #1d4ed8); color: #ffffff; border: 1px solid #60a5fa; border-radius: 20px; padding: 6px 14px; font-size: 0.8rem; font-weight: 700; cursor: pointer; box-shadow: 0 2px 8px rgba(37, 99, 235, 0.4); display: inline-flex; align-items: center; gap: 5px;">
                 ❓ How to Use
@@ -295,7 +284,6 @@
         </header>
         <div id="break-status-banner" style="display: none; background: linear-gradient(95deg, #EF6C00, #E65100); color: white; border-radius: 12px; padding: 16px; margin-bottom: 16px; font-weight: bold; justify-content: space-between; align-items: center; z-index: 9999;"></div>
         
-        <!-- Configurations Panel -->
         <div style="background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 16px; margin-bottom: 20px; display: flex; flex-wrap: wrap; gap: 12px; align-items: center;">
             <div style="flex: 1; min-width: 130px;">
                 <label style="color: var(--text-muted); font-size: 0.75rem; display: block; margin-bottom: 4px; font-weight: bold;">SHIFT TARGET PACE</label>
@@ -321,7 +309,7 @@
             <div style="flex: 1; min-width: 140px;">
                 <label style="color: var(--text-muted); font-size: 0.75rem; display: block; margin-bottom: 4px; font-weight: bold;">TAG COLOR</label>
                 <select id="global-tag-select" style="width: 100%; height: 36px; background-color: #000; border: 1px solid #444; border-radius: 8px; color: #fff; padding: 0 6px;">
-                    <option value="White Tag" selected>⚪ White Tag</option>
+                    <option value="White Tag (STK)" selected>⚪ White Tag (STK)</option>
                     <option value="Green Tag (SOC)">🟢 Green Tag (SOC)</option>
                 </select>
             </div>
@@ -335,6 +323,7 @@
                     <option value="Fencing ">📍 Fencing </option>
                     <option value="Building 61">📍 Building 61</option>
                     <option value="Aisle 7">📍 Aisle 7</option>
+                     <option value="Aisle 16">📍 Aisle 16</option>
                     <option value="Klearview">📍 Klearview</option>
                     <option value="physical-tag">🏷️ Physical Tag</option>
 
@@ -351,7 +340,6 @@
             </div>
         </div>
 
-        <!-- Active Staged Card -->
         <div id="active-list-card" style="display: none; background: linear-gradient(135deg, #1A237E, #0D47A1); border: 1px solid #29B6F6; border-radius: 20px; padding: 20px; margin-bottom: 20px; flex-direction: column; gap: 14px;">
             <div style="display: flex; justify-content: space-between; align-items: center;">
                 <div>
@@ -371,7 +359,6 @@
                 <button onclick="modifyActivePickAmount(5)">+5</button>
             </div>
             <button onclick="editActiveNotes()" style="height: 44px; background: rgba(255,255,255,0.1); border: 1px solid #444; border-radius: 12px; color: #FFF; font-weight: bold; cursor: pointer; margin-bottom: 4px;">📝 Add / Edit Active Notes</button>
-            <!-- Quick Notes Tag Grid (Inside the Blue Card) -->
 <div style="margin-bottom: 10px;">
     <label style="color: var(--text-muted); font-size: 0.75rem; display: block; margin-bottom: 4px; font-weight: bold;">
         QUICK TAGS
@@ -391,6 +378,7 @@
             <option value="Premade Pallet">Premade Pallet</option>
             <option value="Stick pull">Stick pull</option>
             <option value="Self load">Self load</option>
+             <option value="Isle 5">Isle 5</option>
 <option value="Fragile">Fragile tag</option>
             <option value="2nd Level Grab">2nd Level Grab</option>
             <option value="3rd Level Grab">3rd Level Grab</option>
@@ -405,7 +393,6 @@
             <button onclick="completeActiveList()" style="background-color: #FFF; color: #0D47A1; border: none; border-radius: 12px; height: 50px; font-size: 1rem; font-weight: 700; cursor: pointer;">('🗹 SEAL & ARCHIVE ACTIVE PICK')</button>
         </div>
 
-        <!-- Live Scoreboard Grid -->
         <div class="metric-grid">
             <div class="metric-card">
                 <span class="metric-label">Current Pace</span>
@@ -424,10 +411,8 @@
                 <span class="metric-value" id="stat-needed">0</span>
             </div>
         </div>
-        <!-- Main Side-by-Side Wrapper -->
 <div style="display: flex; gap: 12px; align-items: stretch; width: 100%; margin-bottom: 12px;">
 
-    <!-- Left Side: Shift Quota Progress (Takes 3/4 of space) -->
     <div class="progress-container" style="flex: 3; margin-bottom: 0;">
         <div style="display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 600;">
             <span style="color: var(--text-muted);">Shift Quota Progress</span>
@@ -438,7 +423,6 @@
         </div>
     </div>
 
-    <!-- Right Side: Total Break Time Counter (Takes 1/4 of space) -->
     <div id="break-tracker-card" style="flex: 1; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 8px 12px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;">
         <div style="font-size: 0.7rem; color: #888; text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px; white-space: nowrap;">
             Break Time
@@ -450,10 +434,8 @@
 
 </div>
 
-<!-- Delay Warning stays below -->
 <div id="live-delay-warning" style="display: none; padding: 14px; border-radius: 12px; margin-bottom: 16px; font-weight: bold; text-align: center;"></div>
-        <!-- Delays -->
-<!-- Delays -->
+    
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; margin-bottom: 16px;">
             <button id="btn-break-10" class="break-btn" style="background-color: #E65100; padding: 10px; color: white; border-radius: 12px; border: none;" onclick="window.floorPace.startBreak('10-Min Break')">☕ 10-MIN BREAK</button>
             <button id="btn-break-lunch" class="break-btn" style="background-color: #BF360C; padding: 10px; color: white; border-radius: 12px; border: none;" onclick="window.floorPace.startBreak('Lunch')">🍱 LUNCH</button>
@@ -468,7 +450,6 @@
         </nav>
         
         <div id="tab-dashboard" class="tab-content active">
-            <!-- INSTANT QUICK Pick BUTTONS -->
             <div style="margin-bottom: 16px;">
                 <div style="font-size: 0.8rem; font-weight: bold; color: #888; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">⚡ Quick Pick (Bypass Staging)</div>
                 <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px;">
@@ -530,7 +511,6 @@
         </div>
     </div>
 
-    <!-- MODAL -->
     <div id="manual-modal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0,0,0,0.85); z-index: 1000; align-items: center; justify-content: center;">
         <div style="background-color: var(--bg-card); width: 90%; max-width: 450px; border-radius: 24px; padding: 24px; border: 1px solid #333;">
             <h3 style="text-align: center; margin-bottom: 16px;">Log Manual Pick</h3>
@@ -542,7 +522,6 @@
             </div>
         </div>
     </div>
-<!-- Tutorial / Onboarding Modal Popup -->
 <div id="tutorial-modal" style="display: none; position: fixed; inset: 0; background-color: rgba(0, 0, 0, 0.85); backdrop-filter: blur(4px); z-index: 9999; align-items: center; justify-content: center; padding: 16px;">
     <div style="background-color: #121212; border: 1px solid #333; border-radius: 12px; max-width: 450px; width: 100%; max-height: 85vh; overflow-y: auto; padding: 20px; color: #fff; box-shadow: 0 10px 25px rgba(0,0,0,0.5);">
         
@@ -580,8 +559,6 @@
     </div>
 </div>
     <script>
-// === ROLLING BREAK TIMER ENGINE (MATCHED TO YOUR EMOJI BUTTONS) ===
-// === ROLLING PERSONAL BREAK CALCULATOR ===
         function updateRollingBreakTime() {
             const fp = window.floorPace;
             const timerElem = document.getElementById('total-break-timer');
@@ -592,10 +569,8 @@
                 return;
             }
 
-            // Start with completed personal breaks
             let totalMs = fp.totalPersonalBreakMs || 0;
 
-            // If currently on an ACTIVE personal break, add rolling seconds right now
             if (fp.isOnBreak && fp.breakStartTime && fp.currentBreakType) {
                 const type = fp.currentBreakType.toLowerCase();
                 const isPersonal = type.includes('10') || type.includes('lunch') || type.includes('bathroom');
@@ -605,32 +580,26 @@
                 }
             }
 
-            // Convert to minutes & seconds
             const totalSeconds = Math.floor(totalMs / 1000);
             const minutes = Math.floor(totalSeconds / 60);
             const seconds = totalSeconds % 60;
 
             timerElem.innerText = `${minutes}m ${seconds < 10 ? '0' : ''}${seconds}s`;
         }
-        // === SMART QUICK NOTES ENGINE ===
         function appendQuickNote(noteText, btn) {
-            // 1. Temporary Highlight Effect
             if (btn) {
                 const originalBg = btn.style.background;
                 const originalBorder = btn.style.border;
-                
-                // Highlight styles (vibrant blue feedback)
+
                 btn.style.background = "#3b82f6"; 
                 btn.style.border = "1px solid #60a5fa";
                 
-                // Revert back after 250 milliseconds
                 setTimeout(() => {
                     btn.style.background = originalBg;
                     btn.style.border = originalBorder;
                 }, 250);
             }
 
-            // 2. Existing Note Logic
             let noteInput = document.getElementById('active-note-input');
             
             if (!noteInput) {
@@ -662,7 +631,6 @@
                 window.currentActiveList.notes = noteInput.value.trim();
             }
         }
-        // === TUTORIAL MODAL ENGINE ===
 function openTutorialModal() {
     const modal = document.getElementById('tutorial-modal');
     if (modal) modal.style.display = 'flex';
@@ -672,23 +640,19 @@ function closeTutorialModal() {
     const modal = document.getElementById('tutorial-modal');
     if (modal) modal.style.display = 'none';
 }
-// === QUICK TAG DROPDOWN HELPER (COLOR RESTORE FIXED) ===
         function applySelectedQuickTag(btnElement) {
             const selectElem = document.getElementById('quick-tag-select');
             if (!selectElem || !selectElem.value) return;
 
-            // Flash effect for the + Add button
             if (btnElement) {
-                btnElement.style.backgroundColor = "#60a5fa"; // Bright flash blue
+                btnElement.style.backgroundColor = "#60a5fa"; 
                 setTimeout(() => {
-                    btnElement.style.backgroundColor = "var(--accent-blue, #2563eb)"; // Restore solid blue
+                    btnElement.style.backgroundColor = "var(--accent-blue, #2563eb)"; 
                 }, 200);
             }
 
-            // Hand off selected tag to notes engine (pass null to skip built-in highlight)
             appendQuickNote(selectElem.value, null);
 
-            // Reset dropdown back to default placeholder
             selectElem.selectedIndex = 0;
         }
         function triggerMedicalPause() {
@@ -815,7 +779,7 @@ function closeTutorialModal() {
                 if (this.isOnBreak) return;
                 this.isOnBreak = true;
                 this.breakStartTime = new Date();
-                this.currentBreakType = breakType; // <--- SAVE CURRENT BREAK TYPE
+                this.currentBreakType = breakType;
 
                 ['btn-break-10', 'btn-break-lunch', 'btn-break-bathroom', 'btn-break-cleanup', 'btn-break-lm'].forEach(id => {
                     const btn = document.getElementById(id);
@@ -838,7 +802,6 @@ function closeTutorialModal() {
 
                 this.totalBreakDeductionMs += duration;
 
-                // Track ONLY personal breaks (10-min, lunch, bathroom)
                 const type = (breakType || this.currentBreakType || '').toLowerCase();
                 const isPersonal = type.includes('10') || type.includes('lunch') || type.includes('bathroom');
 
@@ -869,7 +832,6 @@ function closeTutorialModal() {
                 });
                 this.addEntry(0, `🏁 Ended ${breakType}.`);
 
-                // Update UI immediately when break ends
                 updateRollingBreakTime();
             }
             addEntry(count, notes = "", startTimeStr = null) {
@@ -1640,7 +1602,6 @@ function closeTutorialModal() {
         function updateActiveCardUI() {
             if (!window.currentActiveList) return;
             
-            // Sync the text box with current notes
             const activeInput = document.getElementById('active-note-input');
             if (activeInput) activeInput.value = window.currentActiveList.notes || "";
 
